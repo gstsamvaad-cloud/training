@@ -701,6 +701,86 @@
       flex-wrap: wrap;
     }
 
+    /* HANDS-ON EXERCISES */
+    .facts-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: .82rem;
+    }
+
+    .facts-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .facts-table td:first-child {
+      color: #8ea8cc;
+    }
+
+    .facts-table td:last-child {
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      color: #fff;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .group-select-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 26px;
+    }
+
+    .group-chip {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: .85rem;
+      cursor: pointer;
+      transition: all .15s;
+      color: #b0c4e8;
+    }
+
+    .group-chip:hover {
+      border-color: var(--accent2);
+      color: #fff;
+    }
+
+    .group-chip.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--navy);
+    }
+
+    .category-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      background: rgba(46, 196, 182, .15);
+      color: var(--accent2);
+      margin-bottom: 10px;
+    }
+
+    .group-prompt {
+      text-align: center;
+      padding: 60px 20px;
+      color: #5a7099;
+      font-size: .9rem;
+    }
+
     /* LIVE RESULTS (admin big screen) */
     .live-grid {
       display: grid;
@@ -880,6 +960,7 @@
       <div class="tab active" onclick="switchTab('trainee','t-polls')">🗳 Polls</div>
       <div class="tab" onclick="switchTab('trainee','t-doubts')">❓ Doubts</div>
       <div class="tab" onclick="switchTab('trainee','t-cases')">📁 Cases</div>
+      <div class="tab" onclick="switchTab('trainee','t-hands')">🧩 Hands-On</div>
     </div>
 
     <!-- Trainee: Polls -->
@@ -910,6 +991,16 @@
         <div id="trainee-cases-list"></div>
       </div>
     </div>
+
+    <!-- Trainee: Hands-On Exercises (group's own scenario only) -->
+    <div class="tab-content" id="t-hands">
+      <div class="content">
+        <div class="section-title">Hands-On Exercises</div>
+        <p class="section-desc">15 real refund scenarios, one per group. Tap your group number to see your case.</p>
+        <div class="group-select-wrap" id="trainee-group-select"></div>
+        <div id="trainee-hands-list"></div>
+      </div>
+    </div>
   </div>
 
   <!-- ══ ADMIN VIEW ══ -->
@@ -928,6 +1019,7 @@
       <div class="tab active" onclick="switchTab('admin','a-polls')">🗳 Polls &amp; Results</div>
       <div class="tab" onclick="switchTab('admin','a-doubts')">❓ Doubts</div>
       <div class="tab" onclick="switchTab('admin','a-cases')">📁 Cases</div>
+      <div class="tab" onclick="switchTab('admin','a-hands')">🧩 Hands-On</div>
     </div>
 
     <!-- Admin: Polls -->
@@ -954,6 +1046,15 @@
         <div class="section-title">Field Cases — With Answers</div>
         <p class="section-desc">Trainees see the scenario only. Click Reveal Answer when ready.</p>
         <div id="admin-cases-list"></div>
+      </div>
+    </div>
+
+    <!-- Admin: Hands-On Exercises (all 15, with answers) -->
+    <div class="tab-content" id="a-hands">
+      <div class="content">
+        <div class="section-title">Hands-On Exercises — All 15 Groups</div>
+        <p class="section-desc">Each group works its own scenario on their phone. Click Reveal Answer to discuss with that group / the room.</p>
+        <div id="admin-hands-list"></div>
       </div>
     </div>
   </div>
@@ -989,13 +1090,215 @@
       { tag: "FIELD CASE — Issue 8", title: "Unnecessary Documents — TDS Certificate Demanded for Cash Ledger Refund", body: `A taxpayer applied for refund of excess balance in electronic cash ledger, accumulated due to TDS under Section 51. The sanctioning authority raised a deficiency memo (RFD-03) seeking the TDS certificate from the deductor as a mandatory document.`, q: "🤔 Is the demand for TDS certificate valid? What is the correct position?", ans: `<strong>No — this is an undue and impermissible document demand.</strong><br><br>The amount of TDS credit and cash accumulation is <em>directly visible on the GSTN Back-Office (BO) portal</em> and is auto-populated in the taxpayer's electronic cash ledger. No provision in Circular 125/2019 or the CGST Rules requires submission of TDS certificate for refund of excess cash ledger balance.<br><br><strong>Office Instruction Issue 8:</strong> No documents not mentioned in the circular/guidelines should be sought. Asking for TDS certificate violates this instruction and causes unnecessary harassment.<br><br><strong>Corrective action:</strong> Withdraw the deficiency memo insofar as it demands the TDS certificate. Process based on portal data. If there is genuine doubt, verify via BO portal.<br><br><span class="chip chip-rule">Circular 125/44/2019</span> <span class="chip chip-law">Section 51 TDS</span> <span class="chip chip-warn">Facilitation — no undue demands</span>` }
     ];
 
+    const HANDS_ON = [
+      {
+        group: 1, category: "Zero-Rated Supply of Goods",
+        title: "M/s Himalayan Exports — LUT Export of Garments",
+        facts: `M/s Himalayan Exports (Ludhiana) exports readymade garments under LUT, without payment of tax, for Q3 FY 2025-26. The refund working sheet submitted by the taxpayer is below.`,
+        data: [
+          ["ITC on inputs + input services (GSTR-3B Table 4A)", "₹14,80,000"],
+          ["ITC on capital goods (included by taxpayer in Net ITC — verify)", "₹2,10,000"],
+          ["Turnover of zero-rated supply — invoice value (GSTR-1)", "₹1,45,00,000"],
+          ["Turnover of zero-rated supply — FOB value (shipping bills, ICEGATE)", "₹1,32,00,000"],
+          ["Adjusted Total Turnover", "₹2,00,00,000"],
+        ],
+        question: "Compute the correct Net ITC, the correct turnover of zero-rated supply of goods, and the eligible refund amount under Rule 89(4).",
+        ans: `<strong>Step 1 — Net ITC:</strong> Capital goods ITC is expressly excluded from "Net ITC" under the Explanation to Rule 89(4). Correct Net ITC = ₹14,80,000 (exclude the ₹2,10,000).<br><br><strong>Step 2 — Turnover of ZRS goods:</strong> Lower of invoice value and FOB value applies — FOB (₹1,32,00,000) is lower, so use ₹1,32,00,000, not the invoice value.<br><br><strong>Step 3 — Refund</strong> = (₹1,32,00,000 × ₹14,80,000) ÷ ₹2,00,00,000 = <strong>₹9,76,800</strong>.<br><br><span class="chip chip-rule">Rule 89(4)</span> <span class="chip chip-warn">Capital goods ITC — common inclusion error</span>`
+      },
+      {
+        group: 2, category: "Zero-Rated Supply of Goods",
+        title: "M/s Coastal Marine Foods — Time-Barred Shipping Bills",
+        facts: `M/s Coastal Marine Foods (Visakhapatnam) exports frozen shrimp under LUT. For the relevant quarter, 25 shipping bills were filed. On scrutiny, 4 shipping bills are found time-barred — the 2-year limitation under Section 54(1) has expired for the claim covering them.`,
+        data: [
+          ["Total FOB value — all 25 shipping bills", "₹95,00,000"],
+          ["FOB value of the 4 time-barred shipping bills", "₹12,00,000"],
+          ["Net ITC availed for the quarter (GSTR-3B)", "₹6,40,000"],
+          ["Adjusted Total Turnover", "₹1,60,00,000"],
+        ],
+        question: "A trainee officer proposes reducing Net ITC proportionately since 4 bills are being excluded. Is this correct? Compute the eligible refund.",
+        ans: `<strong>The trainee's proposal is incorrect.</strong> Net ITC under Rule 89(4) is a period-level figure drawn from GSTR-3B — it is not tied to individual shipping bills and does not shrink when specific bills are excluded.<br><br><strong>Correct turnover of ZRS goods</strong> = ₹95,00,000 − ₹12,00,000 = ₹83,00,000. Net ITC remains ₹6,40,000.<br><br><strong>Refund</strong> = (₹83,00,000 × ₹6,40,000) ÷ ₹1,60,00,000 = <strong>₹3,32,000</strong>.<br><br><span class="chip chip-rule">Rule 89(4)</span> <span class="chip chip-law">Section 54(1) — 2 year limitation</span>`
+      },
+      {
+        group: 3, category: "Zero-Rated Supply of Services",
+        title: "M/s Bluewave IT Solutions — Export of Services, FIRC Realisation",
+        facts: `M/s Bluewave IT Solutions Pvt Ltd (Hyderabad) exports software support services under LUT. GSTR-1 for the quarter declares export services of ₹1,10,00,000, but actual foreign exchange realisation (per FIRC/BRC) is lower.`,
+        data: [
+          ["Export services value declared in GSTR-1 (do not use directly)", "₹1,10,00,000"],
+          ["Payment actually received during the period (FIRC/BRC)", "₹82,00,000"],
+          ["Advance received in an earlier period, supply completed this period", "+ ₹6,00,000"],
+          ["Advance received this period, supply not yet completed", "− ₹4,00,000"],
+          ["Net ITC for the period", "₹9,00,000"],
+          ["Adjusted Total Turnover", "₹1,40,00,000"],
+        ],
+        question: "Compute the correct turnover of zero-rated supply of services and the eligible refund. Why can't the GSTR-1 figure be used directly?",
+        ans: `<strong>Turnover of ZRS of services</strong> under Rule 89(4) is based on <em>actual receipts</em>, not the invoice/GSTR-1 value: = ₹82,00,000 + ₹6,00,000 − ₹4,00,000 = <strong>₹84,00,000</strong>.<br><br>GSTR-1 reflects invoicing, not realisation — for services, the formula is explicitly payment-linked because "export of services" itself is defined (Section 2(6), IGST Act) with a foreign-exchange-realisation condition.<br><br><strong>Refund</strong> = (₹84,00,000 × ₹9,00,000) ÷ ₹1,40,00,000 = <strong>₹5,40,000</strong>.<br><br><span class="chip chip-rule">Rule 89(4)</span> <span class="chip chip-law">Section 2(6) IGST Act</span> <span class="chip chip-warn">FIRC/BRC statement mandatory</span>`
+      },
+      {
+        group: 4, category: "Zero-Rated Supply of Services",
+        title: "M/s Orion Consulting Services — The Intermediary Trap",
+        facts: `M/s Orion Consulting Services (Gurugram) claims refund of ₹40,00,000 worth of "export of market research services" supplied to its US parent company for FY 2022-23. On examining the agreement, the officer finds Orion identifies Indian clients and facilitates supply between the US parent and those clients, earning a commission — it does not provide the research service on its own account.`,
+        data: [
+          ["Value claimed as export of services (ZRS)", "₹40,00,000"],
+          ["Nature of activity per agreement", "Facilitates supply between two other parties, for commission"],
+          ["Period involved", "FY 2022-23 (pre 01.10.2023 amendment)"],
+        ],
+        question: "Is this eligible for zero-rated supply treatment? What is the officer's key finding?",
+        ans: `<strong>Not eligible as export of services.</strong> On the facts, Orion is acting as an <strong>"intermediary"</strong> under Section 2(13), IGST Act — arranging/facilitating a supply between the US parent and Indian clients for a commission, rather than supplying the service on its own account.<br><br>For the period in question (FY 2022-23, before the intermediary provision was omitted from Section 13(8)(b) w.e.f. 01.10.2023), the <strong>place of supply for intermediary services was the location of the supplier</strong> — i.e., India. This makes it a domestic taxable supply, not an export/zero-rated supply.<br><br><strong>Correct action:</strong> Reject the ZRS refund claim; the supply attracts normal GST as an intra-India transaction.<br><br><span class="chip chip-law">Section 2(13) IGST Act</span> <span class="chip chip-law">Section 13(8)(b) (pre-01.10.2023)</span> <span class="chip chip-warn">Read the agreement, not just the invoice label</span>`
+      },
+      {
+        group: 5, category: "Recipient of Deemed Export",
+        title: "M/s Precision Tools Ltd (EOU) — Refund Claimed by Recipient",
+        facts: `M/s Precision Tools Ltd, a 100% Export Oriented Unit, receives machine components from a domestic supplier under deemed export (Notification 48/2017-CT). The supplier has charged and deposited GST, and has furnished an undertaking that it will not claim refund or avail ITC on this supply. The recipient (EOU) files the refund claim instead.`,
+        data: [
+          ["Value of deemed export supply", "₹60,00,000"],
+          ["GST charged and paid by supplier (18%)", "₹10,80,000"],
+          ["Supplier's undertaking", "Furnished — waives own refund/ITC claim"],
+        ],
+        question: "Can the recipient (EOU) claim this refund? What documents must accompany the claim under Rule 89(2)(g)?",
+        ans: `<strong>Yes.</strong> Under the second proviso to Rule 89(1), where the supplier does not claim refund of tax paid on a deemed export supply, the <strong>recipient</strong> may claim it instead — this is exactly that situation, supported by the supplier's undertaking.<br><br><strong>Documents required (Rule 89(2)(g)):</strong> tax invoice, evidence of receipt of goods (e.g. goods receipt note / endorsement), and an undertaking by the supplier that it has not availed ITC and will not claim refund on the same supply. Verify the undertaking is signed by the supplier's authorised signatory and cross-check the supplier's own GSTR return to confirm no parallel claim exists.<br><br><span class="chip chip-rule">Rule 89(1) 2nd proviso</span> <span class="chip chip-rule">Rule 89(2)(g)</span> <span class="chip chip-law">Notification 48/2017-CT</span>`
+      },
+      {
+        group: 6, category: "Recipient of Deemed Export",
+        title: "M/s Solaris Renewable Energy — Limitation on Deemed Export Refund",
+        facts: `M/s Solaris Renewable Energy, executing an International Competitive Bidding project, receives a deemed export supply of goods. The recipient files the refund application late.`,
+        data: [
+          ["Value of deemed export supply", "₹1,20,00,000"],
+          ["Tax paid (18%)", "₹21,60,000"],
+          ["Invoice date", "12.11.2024"],
+          ["Date supplier's GSTR-3B for this supply was filed", "20.12.2024"],
+          ["Date refund application filed by recipient", "25.02.2027"],
+        ],
+        question: "What is the 'relevant date' for computing the 2-year limitation on a deemed export refund claimed by the recipient? Is this claim time-barred?",
+        ans: `<strong>Relevant date</strong> for deemed export refunds (Explanation 2 to Section 54) is the date on which the return relating to such deemed export supply is furnished — here, <strong>20.12.2024</strong> (not the invoice date).<br><br>Two years from 20.12.2024 expires on <strong>20.12.2026</strong>. The application was filed on 25.02.2027 — roughly <strong>2 months beyond</strong> the limitation period.<br><br><strong>Correct action:</strong> The claim is time-barred under Section 54(1) and must be rejected on that ground, absent any specific notification extending the period for this class of cases.<br><br><span class="chip chip-law">Section 54(1)</span> <span class="chip chip-law">Explanation 2, Section 54</span> <span class="chip chip-warn">Relevant date ≠ invoice date</span>`
+      },
+      {
+        group: 7, category: "Inverted Duty Structure",
+        title: "M/s Sole Craft Footwear — Standard IDS Computation",
+        facts: `M/s Sole Craft Footwear manufactures rubber footwear taxed at 5% (output), procuring inputs taxed at 12% and 18%. The taxpayer's working sheet wrongly includes ITC on input services within "Net ITC".`,
+        data: [
+          ["ITC on inputs only (correct basis for Net ITC in IDS)", "₹22,00,000"],
+          ["ITC on input services (wrongly included by taxpayer)", "₹4,50,000"],
+          ["Turnover of inverted rated supply of goods", "₹1,10,00,000"],
+          ["Adjusted Total Turnover", "₹1,60,00,000"],
+          ["Output tax rate", "5%"],
+        ],
+        question: "What should 'Net ITC' include for an inverted duty structure refund (post-05.07.2022)? Compute the eligible refund under Rule 89(5).",
+        ans: `<strong>Net ITC for IDS refunds is restricted to ITC on INPUTS only</strong> — Notification 14/2022-CT (w.e.f. 05.07.2022) amended the Rule 89(5) definition specifically for inverted duty structure claims to exclude input services (unlike the ZRS formula, which includes both). Correct Net ITC = ₹22,00,000.<br><br><strong>Tax payable on inverted rated supply</strong> = 5% × ₹1,10,00,000 = ₹5,50,000.<br><br><strong>Refund</strong> = [(₹1,10,00,000 × ₹22,00,000) ÷ ₹1,60,00,000] − ₹5,50,000 = ₹15,12,500 − ₹5,50,000 = <strong>₹9,62,500</strong>.<br><br><span class="chip chip-rule">Rule 89(5)</span> <span class="chip chip-rule">Notification 14/2022-CT</span>`
+      },
+      {
+        group: 8, category: "Inverted Duty Structure",
+        title: "M/s Meadow Textiles — The Mixed-Rate Invoice",
+        facts: `M/s Meadow Textiles manufactures fabric taxed at 5% (output). One major input invoice bundles three items at different rates, but the taxpayer's refund working treats the entire invoice at a single (highest) rate.`,
+        data: [
+          ["Invoice item 1 — dyeing chemicals, ₹4,00,000 @ 18%", "ITC ₹72,000"],
+          ["Invoice item 2 — grey cloth, ₹6,00,000 @ 5%", "ITC ₹30,000"],
+          ["Invoice item 3 — packing material, ₹1,50,000 @ 12%", "ITC ₹18,000"],
+          ["Taxpayer's claimed Net ITC (whole invoice treated at 18%, plus other inputs)", "₹9,27,000"],
+          ["Turnover of inverted rated supply of goods", "₹95,00,000"],
+          ["Adjusted Total Turnover", "₹1,45,00,000"],
+          ["Output tax rate", "5%"],
+        ],
+        question: "Identify the error, recompute the correct Net ITC, and compute the correct refund under Rule 89(5).",
+        ans: `<strong>Error:</strong> The mixed-rate invoice must be bifurcated item-wise, not treated at one flat rate. Correct ITC on that invoice = ₹72,000 + ₹30,000 + ₹18,000 = ₹1,20,000 — not ₹11,50,000 × 18% (₹2,07,000) as the taxpayer computed. This overstates ITC on that invoice by ₹87,000.<br><br><strong>Correct Net ITC</strong> = ₹9,27,000 − ₹87,000 = ₹8,40,000.<br><br><strong>Tax payable on inverted turnover</strong> = 5% × ₹95,00,000 = ₹4,75,000.<br><br><strong>Correct refund</strong> = [(₹95,00,000 × ₹8,40,000) ÷ ₹1,45,00,000] − ₹4,75,000 ≈ ₹5,50,345 − ₹4,75,000 ≈ <strong>₹75,345</strong> (against the taxpayer's overstated claim of ≈ ₹1,32,345 — an overclaim of roughly ₹57,000).<br><br><span class="chip chip-rule">Rule 89(5)</span> <span class="chip chip-warn">Always call for HSN/item-wise break-up of mixed invoices</span>`
+      },
+      {
+        group: 9, category: "Inverted Duty Structure",
+        title: "M/s Northern Plastics Ltd — When the Formula Yields Nil",
+        facts: `M/s Northern Plastics Ltd manufactures plastic goods taxed at 12% (output), for Q2 FY 2024-25 (post the 05.07.2022 amendment restricting IDS Net ITC to inputs only).`,
+        data: [
+          ["ITC on inputs", "₹14,20,000"],
+          ["ITC on input services (claimed by taxpayer as part of Net ITC)", "₹4,40,000"],
+          ["Turnover of inverted rated supply of goods", "₹1,05,00,000"],
+          ["Adjusted Total Turnover", "₹1,70,00,000"],
+          ["Output tax rate", "12%"],
+        ],
+        question: "Compute the correct Net ITC and the eligible refund. What happens if the formula produces a negative figure?",
+        ans: `<strong>Correct Net ITC</strong> = ₹14,20,000 (input services excluded per Notification 14/2022-CT, same principle as Group 7's case).<br><br><strong>Tax payable on inverted turnover</strong> = 12% × ₹1,05,00,000 = ₹12,60,000.<br><br><strong>Refund</strong> = [(₹1,05,00,000 × ₹14,20,000) ÷ ₹1,70,00,000] − ₹12,60,000 ≈ ₹8,77,059 − ₹12,60,000 = <strong>negative (−₹3,82,941)</strong>.<br><br>A negative result means the inversion, after excluding input services, is not significant enough at this output rate — <strong>refund is Nil</strong>, not a negative figure to carry forward or adjust elsewhere.<br><br><span class="chip chip-rule">Rule 89(5)</span> <span class="chip chip-warn">Negative formula result = Nil refund, not a claimable negative</span>`
+      },
+      {
+        group: 10, category: "Refund to Supplier of Goods to SEZ",
+        title: "M/s Prime Steel Industries — Supply to SEZ, With Payment of Tax",
+        facts: `M/s Prime Steel Industries supplies structural steel to an SEZ developer for authorised operations, charging and paying IGST. The supplier applies for refund of the IGST paid, treating it as a zero-rated supply under Section 16(3)(b), IGST Act.`,
+        data: [
+          ["Value of supply to SEZ", "₹85,00,000"],
+          ["IGST paid (18%)", "₹15,30,000"],
+          ["SEZ officer's endorsement on tax invoice", "To be verified"],
+        ],
+        question: "Besides the standard 'export with payment of tax' refund documents, what is mandatory here, and how does the filing route differ from a regular export refund?",
+        ans: `<strong>A specific endorsement</strong> from the jurisdictional SEZ officer confirming the goods were admitted into the SEZ for <strong>authorised operations</strong> is mandatory under the proviso to Rule 89(1) — this is what makes the supply a valid zero-rated supply to SEZ.<br><br>Unlike ordinary exports (which auto-flow via shipping bill/ICEGATE integration with GSTR-1), <strong>refunds on supply to SEZ must be filed manually</strong> through the jurisdictional GST officer along with this endorsement — there is no equivalent customs data feed.<br><br><strong>Verification:</strong> Confirm the endorsement is genuine, check the SEZ unit's Letter of Approval (LOA) is valid and current, and match invoice value/date to the endorsed copy.<br><br><span class="chip chip-rule">Proviso to Rule 89(1)</span> <span class="chip chip-law">Section 16(3)(b) IGST Act</span>`
+      },
+      {
+        group: 11, category: "Refund to Supplier of Goods to SEZ",
+        title: "M/s Deccan Components — LOA Mismatch on SEZ Supply",
+        facts: `M/s Deccan Components supplies auto parts to an SEZ unit under LUT (without payment of tax) and claims refund of accumulated ITC. On verification, the SEZ unit's Letter of Approval (LOA) authorises only "assembly of electronic components" — auto parts do not appear in the approved list of operations.`,
+        data: [
+          ["Invoice value of supply to SEZ", "₹60,00,000"],
+          ["Refund of accumulated ITC claimed", "₹7,80,000"],
+          ["SEZ unit's LOA — authorised operations", "Assembly of electronic components only"],
+          ["Goods actually supplied", "Auto parts"],
+        ],
+        question: "Is the supplier eligible for zero-rated treatment on this supply? What must the officer verify before sanctioning?",
+        ans: `<strong>Not eligible as zero-rated, on these facts.</strong> A supply to SEZ qualifies for zero-rating only when it is for the SEZ unit's <strong>authorised operations</strong> (Section 2(m), SEZ Act read with Section 16, IGST Act). Auto parts falling outside the LOA's approved list of operations means this supply does not meet that condition.<br><br><strong>Correct action:</strong> Do not sanction the ITC refund on this basis. Either the LOA needs to be amended to cover the actual goods received (verify with SEZ authorities), or the supply should be treated and taxed as an ordinary domestic supply.<br><br><strong>Mandatory verification step:</strong> Always cross-check the SEZ unit's LOA/approved operations list against the description of goods/services supplied — this is not a formality.<br><br><span class="chip chip-law">Section 2(m) SEZ Act</span> <span class="chip chip-law">Section 16 IGST Act</span> <span class="chip chip-warn">LOA scope check is mandatory, not optional</span>`
+      },
+      {
+        group: 12, category: "Refund to Supplier of Services to SEZ",
+        title: "M/s Vertex Legal & Tax Advisors — Services to SEZ, With Payment of Tax",
+        facts: `M/s Vertex Legal & Tax Advisors provides consultancy services to an SEZ unit for its authorised operations, charging and paying IGST. Refund is claimed under Rule 89, with the SEZ unit's endorsement attached.`,
+        data: [
+          ["Value of services supplied", "₹25,00,000"],
+          ["IGST charged and paid (18%)", "₹4,50,000"],
+          ["SEZ endorsement", "Attached"],
+        ],
+        question: "Besides the endorsement, what additional declaration is required from the SEZ unit under Rule 89(2)(n), and why?",
+        ans: `<strong>A declaration from the SEZ unit/developer</strong> confirming it has <strong>not availed input tax credit</strong> of the tax paid by the supplier (Rule 89(2)(n)) is mandatory alongside the endorsement.<br><br><strong>Why:</strong> This prevents a double benefit — the supplier claiming refund of the IGST paid, while the SEZ unit simultaneously avails ITC of the same tax. Since SEZ supplies are zero-rated at the supplier's end, allowing the recipient to also claim credit would mean the tax is neutralised twice over.<br><br><strong>Verification:</strong> Ensure the declaration is signed by the SEZ unit's authorised signatory and, where feasible, cross-check the SEZ unit's credit ledger.<br><br><span class="chip chip-rule">Rule 89(2)(n)</span> <span class="chip chip-warn">Prevents double benefit — always insist on this declaration</span>`
+      },
+      {
+        group: 13, category: "Refund to Supplier of Services to SEZ",
+        title: "M/s Skyline Software Services — Limitation on Quarter-Wise SEZ Service Refunds",
+        facts: `M/s Skyline Software Services provides SaaS support to an SEZ IT unit under LUT, across all four quarters of FY 2024-25, filing refund applications quarter-wise. For Q3 (Oct–Dec 2024), the application is filed on 15.01.2027.`,
+        data: [
+          ["Period covered by the Q3 application", "Oct–Dec 2024"],
+          ["Application filing date", "15.01.2027"],
+          ["Refund type", "Accumulated ITC, zero-rated supply of services to SEZ, under LUT"],
+        ],
+        question: "What is the 'relevant date' for computing the 2-year limitation on this refund, and does filing look time-barred by quarter-end reckoning alone?",
+        ans: `<strong>Relevant date</strong> (Explanation 2(c), Section 54) for zero-rated supply of services is tied to <strong>receipt of payment</strong> (FIRC/bank realisation date) for each invoice — not the tax-period end date.<br><br>Simply comparing the filing date (15.01.2027) to the quarter-end (31.12.2024) would wrongly suggest the whole claim is time-barred. The officer must instead pull the <strong>FIRC/realisation date for every invoice</strong> within Q3 and test the 2-year limit against each individually.<br><br><strong>Correct action:</strong> Invoices whose realisation date falls after 15.01.2025 (i.e., within 2 years of the filing date) remain valid for refund even though they fall within an otherwise "late" quarterly application; only invoices realised before that cut-off are time-barred.<br><br><span class="chip chip-law">Explanation 2(c), Section 54</span> <span class="chip chip-warn">Check limitation invoice-wise, not just tax-period-wise</span>`
+      },
+      {
+        group: 14, category: "Refund to Unregistered Taxpayers",
+        title: "Mr. Arvind Rao — Cancelled Flat Booking",
+        facts: `Mr. Arvind Rao (unregistered) booked a flat with M/s Skyline Developers and paid the amount below in September 2023. The booking was cancelled in June 2025 (loan rejection). The developer refunded the principal amount but could not issue a credit note to adjust the GST component, as the time limit under Section 34(2) for issuing a credit note against future liability had already lapsed. The developer confirms the GST was deposited with the government at the time.`,
+        data: [
+          ["Total amount paid (Sept 2023)", "₹45,00,000"],
+          ["Of which, GST component (5%)", "₹2,25,000"],
+          ["Booking cancelled", "June 2025"],
+          ["Developer's credit note window", "Lapsed — cannot adjust"],
+        ],
+        question: "Can Mr. Rao claim this GST refund directly from the department? What certificate is mandatory, and what is the limitation period?",
+        ans: `<strong>Yes</strong> — this is squarely the situation Circular 188/20/2022-GST addresses: where the supplier cannot adjust the tax via credit note, the unregistered person may claim the refund directly, after obtaining a <strong>temporary registration</strong> on the GST portal for the purpose of filing.<br><br><strong>Mandatory certificate</strong> from the developer (supplier), confirming: (i) the GST was actually deposited with the government, and (ii) the supplier has not adjusted it through a credit note and will not separately claim any refund of the same amount.<br><br><strong>Limitation:</strong> 2 years from the <strong>date of the cancellation communication</strong> (June 2025) — not from the original payment date (September 2023).<br><br><span class="chip chip-rule">Circular 188/20/2022-GST</span> <span class="chip chip-rule">Rule 89(2)(ka)/(kb)</span> <span class="chip chip-law">Section 34(2)</span>`
+      },
+      {
+        group: 15, category: "Refund to Unregistered Taxpayers",
+        title: "Ms. Kavita Iyer — Insurance Free-Look Cancellation",
+        facts: `Ms. Kavita Iyer (unregistered) paid the amount below for a term insurance policy and exercised the free-look cancellation window. The insurer refunded only the base premium via NEFT, telling her to claim the GST component from the department directly.`,
+        data: [
+          ["Base premium paid", "₹1,00,000"],
+          ["GST paid (18%)", "₹18,000"],
+          ["Total paid", "₹1,18,000"],
+          ["Refunded by insurer", "₹1,00,000 (base premium only)"],
+        ],
+        question: "Is this covered under Circular 188/20/2022? What should the officer check before entertaining a direct claim?",
+        ans: `<strong>Check the insurer's own credit note position FIRST.</strong> If the insurer already issued a credit note for the cancelled policy within the Section 34(2) window and reduced its own output tax liability accordingly, then the insurer — not the department — owes Ms. Iyer the GST refund directly. Processing a departmental refund in that case would create a double benefit.<br><br><strong>Only if</strong> the credit note window has lapsed and the insurer genuinely could not adjust the tax, does the Circular 188/20/2022 route apply — temporary registration, refund application, backed by the insurer's certificate of tax deposited and non-adjustment.<br><br><strong>Correct action:</strong> Ask the insurer's certificate to state clearly whether a credit note was issued, before entertaining the claim.<br><br><span class="chip chip-rule">Circular 188/20/2022-GST</span> <span class="chip chip-law">Section 34(2)</span> <span class="chip chip-warn">Always rule out supplier-side adjustment first</span>`
+      },
+    ];
+
     const POLLS = [
       { id: 0, title: "Ice-breaker", q: "Your domain of posting?", opts: ["customs", "GST", "Audit", "Others"], correct: null, type: "experience" },
-      { id: 0, title: "Biggest Refund Challenge", q: "In your experience so far, what is the BIGGEST challenge in refund verification?", opts: ["Timely submission of verification reports", "Errors in Net ITC calculation", "Understanding ZRS/IDS formula", "Detecting fake/fraudulent applications"], correct: null, type: "experience" },
-      { id: 1, title: "Quiz: GSTR-1 vs 3B Mismatch", q: "You notice GSTR-1 declared liability is ₹10 lakh but GSTR-3B paid only ₹7 lakh (no SCN issued) for FY 2018-19. You are processing a refund in 2026. What should the sanctioning officer do?", opts: ["Ignore — it's the adjudication officer's job", "Mention it in the refund order and leave it", "issue SCN for Withholding the refund and Initiate recovery under Sec 75(12)/79", "Ask the taxpayer to self-correct in next GSTR-3B"], correct: 1, type: "quiz" },
-      { id: 2, title: "Net ITC Formula — Most Misunderstood Element", q: "Which element of the Rule 89(5) Net ITC formula causes the most confusion in IDS refund calculations?", opts: ["What to include in 'Net ITC'", "Calculation of 'Adjusted Total Turnover'", "Identifying 'Inverted Rated Supply Turnover'", "Tax paid on outward supplies of inverted rated goods"], correct: null, type: "diagnostic" },
-      { id: 3, title: "Cash Ledger Balance — Rs.1 Refund", q: "A taxpayer applies for refund of excess cash ledger balance of ₹800 (less than ₹1,000). Should you sanction it?", opts: ["No — CGST Rule prescribes minimum ₹1,000", "Yes — the ₹1,000 minimum does NOT apply to cash ledger refunds", "Yes, but only after approval from the Commissioner", "No — it's not worth the administrative effort"], correct: 1, type: "quiz" },
-      { id: 4, title: "Quiz: Refund to Cancelled Taxpayer", q: "A regular taxpayer's registration was cancelled suo-motu by the department. GSTR-10 not filed. They apply for refund. What is the correct action?", opts: ["Process the refund — cancellation doesn't bar refund rights", "Process only after GSTR-10 is filed", "Reject — suo-motu cancelled taxpayers are ineligible for refund", "Withhold refund under Section 54(10)"], correct: 2, type: "quiz" },
+      { id: 1, title: "Biggest Refund Challenge", q: "In your experience so far, what is the BIGGEST challenge in refund verification?", opts: ["Timely submission of verification reports", "Errors in Net ITC calculation", "Understanding ZRS/IDS formula", "Detecting fake/fraudulent applications"], correct: null, type: "experience" },
+      { id: 2, title: "Quiz: GSTR-1 vs 3B Mismatch", q: "You notice GSTR-1 declared liability is ₹10 lakh but GSTR-3B paid only ₹7 lakh (no SCN issued) for FY 2018-19. You are processing a refund in 2026. What should the sanctioning officer do?", opts: ["Ignore — it's the adjudication officer's job", "Mention it in the refund order and leave it", "issue SCN for Withholding the refund and Initiate recovery under Sec 75(12)/79", "Ask the taxpayer to self-correct in next GSTR-3B"], correct: 1, type: "quiz" },
+      { id: 3, title: "Net ITC Formula — Most Misunderstood Element", q: "Which element of the Rule 89(5) Net ITC formula causes the most confusion in IDS refund calculations?", opts: ["What to include in 'Net ITC'", "Calculation of 'Adjusted Total Turnover'", "Identifying 'Inverted Rated Supply Turnover'", "Tax paid on outward supplies of inverted rated goods"], correct: null, type: "diagnostic" },
+      { id: 4, title: "Cash Ledger Balance — Rs.1 Refund", q: "A taxpayer applies for refund of excess cash ledger balance of ₹800 (less than ₹1,000). Should you sanction it?", opts: ["No — CGST Rule prescribes minimum ₹1,000", "Yes — the ₹1,000 minimum does NOT apply to cash ledger refunds", "Yes, but only after approval from the Commissioner", "No — it's not worth the administrative effort"], correct: 1, type: "quiz" },
+      { id: 5, title: "Quiz: Refund to Cancelled Taxpayer", q: "A regular taxpayer's registration was cancelled suo-motu by the department. GSTR-10 not filed. They apply for refund. What is the correct action?", opts: ["Process the refund — cancellation doesn't bar refund rights", "Process only after GSTR-10 is filed", "Reject — suo-motu cancelled taxpayers are ineligible for refund", "Withhold refund under Section 54(10)"], correct: 2, type: "quiz" },
 
     ];
 
@@ -1049,10 +1352,10 @@
 
     function enterSession() {
       if (role === 'admin') {
-        buildAdminPolls(); buildAdminDoubts(); buildAdminCases();
+        buildAdminPolls(); buildAdminDoubts(); buildAdminCases(); buildAdminHandsOn();
         showView('view-admin');
       } else {
-        buildTraineePolls(); buildTraineeDoubts(); buildTraineeCases();
+        buildTraineePolls(); buildTraineeDoubts(); buildTraineeCases(); buildTraineeHandsOn();
         showView('view-trainee');
       }
     }
@@ -1174,6 +1477,85 @@
       <div style="padding:14px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;font-size:.85rem;color:#5a7099;font-style:italic;">Think through your answer. The instructor will reveal the correct position after discussion.</div>
     </div>
   `).join('');
+    }
+
+    // ════════════════════════════════════════════════════
+    //  TRAINEE — HANDS-ON EXERCISES (group's own scenario only)
+    // ════════════════════════════════════════════════════
+    let selectedGroup = parseInt(sessionStorage.getItem('gst_group'), 10) || null;
+
+    function factsTable(rows) {
+      return `<table class="facts-table">${rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>`;
+    }
+
+    function buildTraineeGroupSelect() {
+      const wrap = document.getElementById('trainee-group-select');
+      wrap.innerHTML = HANDS_ON.map(h => `
+        <div class="group-chip ${selectedGroup === h.group ? 'active' : ''}" onclick="selectGroup(${h.group})">${h.group}</div>
+      `).join('');
+    }
+
+    function selectGroup(g) {
+      selectedGroup = g;
+      sessionStorage.setItem('gst_group', g);
+      buildTraineeGroupSelect();
+      renderTraineeHands();
+    }
+
+    function renderTraineeHands() {
+      const list = document.getElementById('trainee-hands-list');
+      if (!selectedGroup) {
+        list.innerHTML = `<div class="group-prompt">Tap your group number above to open your assigned scenario.</div>`;
+        return;
+      }
+      const h = HANDS_ON.find(x => x.group === selectedGroup);
+      list.innerHTML = `
+        <div class="case-banner">
+          <div class="case-banner-tag">GROUP ${String(h.group).padStart(2, '0')}</div>
+          <div class="category-badge">${h.category}</div>
+          <div class="case-banner-title">${h.title}</div>
+          <div class="case-banner-body">${h.facts}</div>
+          ${factsTable(h.data)}
+        </div>
+        <div class="case-q">${h.question}</div>
+        <div style="padding:14px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;font-size:.85rem;color:#5a7099;font-style:italic;">Work through this as a group. The instructor will reveal the correct treatment when your group presents.</div>
+      `;
+    }
+
+    function buildTraineeHandsOn() {
+      buildTraineeGroupSelect();
+      renderTraineeHands();
+    }
+
+    // ════════════════════════════════════════════════════
+    //  ADMIN — HANDS-ON EXERCISES (all 15, with answers)
+    // ════════════════════════════════════════════════════
+    function buildAdminHandsOn() {
+      document.getElementById('admin-hands-list').innerHTML = HANDS_ON.map(h => `
+        <div style="margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.07);">
+          <div class="case-banner">
+            <div class="case-banner-tag">GROUP ${String(h.group).padStart(2, '0')}</div>
+            <div class="category-badge">${h.category}</div>
+            <div class="case-banner-title">${h.title}</div>
+            <div class="case-banner-body">${h.facts}</div>
+            ${factsTable(h.data)}
+          </div>
+          <div class="case-q">${h.question}</div>
+          <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="adminRevealHands(${h.group})">🔍 Reveal Answer</button>
+          </div>
+          <div class="reveal-panel" id="ah-reveal-${h.group}">
+            <div class="reveal-label">✅ Correct Position</div>
+            <div class="reveal-body">${h.ans}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function adminRevealHands(g) {
+      const el = document.getElementById(`ah-reveal-${g}`);
+      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+      if (el.style.display === 'block') el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     // ════════════════════════════════════════════════════
