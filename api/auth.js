@@ -18,8 +18,8 @@ module.exports = async (req, res) => {
   const TRAINEE_USER = 'officer';
   const ADMIN_USER   = 'admin';
   const TRAINEE_PASS = process.env.TRAINEE_PASSWORD || 'gst2026';
-  const ADMIN_PASS   = process.env.ADMIN_PASSWORD   || 'admin2026';
-  const SECRET       = process.env.SESSION_SECRET   || '12345678';
+  const ADMIN_PASS   = process.env.ADMIN_PASSWORD   || 'nacin@admin';
+  const SECRET       = process.env.SESSION_SECRET   || 'gst-refund-secret-2026';
 
   let role = null;
   if (username === ADMIN_USER && password === ADMIN_PASS)   role = 'admin';
