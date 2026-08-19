@@ -1,497 +1,1171 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GST Refund Training — NACIN</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
-:root {
-  --navy:#0B1F3A; --navy-mid:#122540; --blue:#1A5FAB;
-  --accent:#F5A623; --accent2:#2EC4B6; --red:#E63946;
-  --green:#2DC653; --muted:#6B7A99; --border:#D6E0F5;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',sans-serif;background:var(--navy);color:#fff;min-height:100vh;overflow-x:hidden;}
-.view{display:none;min-height:100vh;flex-direction:column;}
-.view.active{display:flex;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Refund Training — NACIN</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
 
-/* LOGIN */
-.login-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;}
-.login-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:48px 40px;width:100%;max-width:420px;text-align:center;}
-.login-logo{font-size:2.8rem;margin-bottom:16px;}
-.login-title{font-size:1.5rem;font-weight:800;margin-bottom:6px;}
-.login-sub{font-size:.85rem;color:#8ea8cc;margin-bottom:36px;line-height:1.5;}
-.input-group{text-align:left;margin-bottom:18px;}
-.input-group label{font-size:.78rem;font-weight:600;color:#8ea8cc;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:8px;}
-.input-group input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:13px 16px;color:#fff;font-size:.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .2s;}
-.input-group input:focus{border-color:var(--accent2);}
-.login-error{background:rgba(230,57,70,.12);border:1px solid rgba(230,57,70,.3);border-radius:8px;padding:10px 14px;font-size:.85rem;color:#ff7b84;margin-bottom:16px;display:none;}
-.login-hint{font-size:.78rem;color:#5a7099;margin-top:20px;line-height:1.6;}
+    :root {
+      --navy: #0B1F3A;
+      --navy-mid: #122540;
+      --blue: #1A5FAB;
+      --accent: #F5A623;
+      --accent2: #2EC4B6;
+      --red: #E63946;
+      --green: #2DC653;
+      --muted: #6B7A99;
+      --border: #D6E0F5;
+    }
 
-/* HEADER */
-.header{background:linear-gradient(135deg,var(--navy-mid) 0%,#0D2B55 100%);border-bottom:3px solid var(--accent);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.header-left .sub{font-size:.7rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.1em;}
-.header-left .title{font-size:1rem;font-weight:700;}
-.header-right{display:flex;gap:10px;align-items:center;}
-.role-badge{padding:4px 14px;border-radius:20px;font-size:.72rem;font-weight:700;letter-spacing:.06em;}
-.role-admin{background:var(--accent);color:var(--navy);}
-.role-trainee{background:var(--accent2);color:var(--navy);}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:9px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
-.btn-primary{background:var(--accent);color:var(--navy);}
-.btn-primary:hover{background:#ffb940;transform:translateY(-1px);}
-.btn-secondary{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.18);}
-.btn-secondary:hover{background:rgba(255,255,255,.18);}
-.btn-success{background:var(--green);color:#fff;}
-.btn-success:hover{background:#3ddd63;}
-.btn-danger{background:var(--red);color:#fff;}
-.btn-sm{padding:7px 16px;font-size:.8rem;}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
-.btn-full{width:100%;justify-content:center;}
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--navy);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-/* TABS */
-.tabs{display:flex;gap:0;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.08);}
-.tab{padding:14px 24px;font-size:.85rem;font-weight:600;color:#6B7A99;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;}
-.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
-.tab-content{display:none;flex:1;overflow-y:auto;}
-.tab-content.active{display:block;}
+    .view {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+    }
 
-/* CONTENT AREA */
-.content{padding:28px;max-width:960px;margin:0 auto;}
-.section-title{font-size:1.2rem;font-weight:800;color:var(--accent);margin-bottom:6px;}
-.section-desc{font-size:.85rem;color:#8ea8cc;margin-bottom:24px;}
+    .view.active {
+      display: flex;
+    }
 
-/* CARDS */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
-.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
-.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px;}
-.card.type-poll::before{background:var(--accent2);}
-.card.type-case::before{background:var(--accent);}
-.card.type-quiz::before{background:var(--red);}
-.card.type-doubt::before{background:#9B59B6;}
-.card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.22);}
-.card-badge{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;display:inline-block;margin-bottom:10px;}
-.badge-poll{background:rgba(46,196,182,.15);color:var(--accent2);}
-.badge-case{background:rgba(245,166,35,.15);color:var(--accent);}
-.badge-quiz{background:rgba(230,57,70,.15);color:#ff7b84;}
-.badge-doubt{background:rgba(155,89,182,.15);color:#c39bd3;}
-.card h3{font-size:.95rem;font-weight:700;margin-bottom:6px;line-height:1.4;}
-.card p{font-size:.8rem;color:#8ea8cc;line-height:1.5;}
-.card-time{font-size:.7rem;color:#5a7099;margin-top:10px;font-family:'JetBrains Mono',monospace;}
+    /* LOGIN */
+    .login-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
 
-/* POLL */
-.poll-wrap{max-width:760px;}
-.poll-q{font-size:clamp(1.1rem,2.5vw,1.6rem);font-weight:800;line-height:1.3;margin-bottom:28px;}
-.poll-opts{display:flex;flex-direction:column;gap:12px;}
-.poll-opt{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.12);border-radius:11px;padding:16px 20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;}
-.poll-opt:hover:not(.voted){border-color:var(--accent2);background:rgba(46,196,182,.07);}
-.poll-opt.selected{border-color:var(--accent2);background:rgba(46,196,182,.1);}
-.poll-opt.correct{border-color:var(--green);background:rgba(45,198,83,.1);}
-.poll-opt.wrong-sel{border-color:var(--red);background:rgba(230,57,70,.08);}
-.poll-opt.voted{cursor:default;}
-.opt-letter{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;}
-.poll-opt.selected .opt-letter{background:var(--accent2);color:var(--navy);}
-.poll-opt.correct .opt-letter{background:var(--green);color:#fff;}
-.poll-opt.wrong-sel .opt-letter{background:var(--red);color:#fff;}
-.opt-text{font-size:.9rem;line-height:1.4;}
-.poll-status{margin-top:20px;padding:14px 18px;border-radius:10px;font-size:.88rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#8ea8cc;}
-.poll-status.success{background:rgba(46,196,182,.08);border-color:rgba(46,196,182,.25);color:var(--accent2);}
+    .login-card {
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 20px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
 
-/* RESULTS BAR */
-.results-wrap{margin-top:24px;}
-.result-row{margin-bottom:14px;}
-.result-label{font-size:.82rem;margin-bottom:5px;display:flex;justify-content:space-between;}
-.result-bar-bg{background:rgba(255,255,255,.07);border-radius:6px;height:26px;overflow:hidden;}
-.result-bar{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;font-size:.75rem;font-weight:700;transition:width .8s cubic-bezier(.4,0,.2,1);min-width:0;}
-.result-bar.bar-correct{background:linear-gradient(90deg,var(--green),#57e37a);}
-.result-bar.bar-normal{background:linear-gradient(90deg,var(--blue),#3a7fd5);}
-.correct-reveal{margin-top:16px;padding:14px 18px;background:rgba(45,198,83,.1);border:1px solid rgba(45,198,83,.28);border-radius:10px;font-size:.9rem;}
-.correct-reveal strong{color:var(--green);}
+    .login-logo {
+      font-size: 2.8rem;
+      margin-bottom: 16px;
+    }
 
-/* DOUBTS */
-.doubt-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:13px;padding:20px 22px;margin-bottom:14px;cursor:pointer;transition:all .2s;}
-.doubt-card:hover{border-color:#9B59B6;background:rgba(155,89,182,.07);}
-.doubt-num{font-size:.72rem;font-weight:700;color:#9B59B6;margin-bottom:7px;font-family:'JetBrains Mono',monospace;}
-.doubt-q{font-size:.95rem;font-weight:600;line-height:1.4;}
-.doubt-ans{font-size:.86rem;line-height:1.7;color:#b0c4e8;border-top:1px solid rgba(255,255,255,.08);padding-top:14px;margin-top:14px;display:none;}
-.doubt-ans strong{color:#fff;}
-.doubt-ans .law{color:var(--accent2);font-family:'JetBrains Mono',monospace;font-size:.8rem;}
-.chip{display:inline-block;padding:3px 9px;border-radius:20px;font-size:.68rem;font-weight:700;}
-.chip-law{background:rgba(26,95,171,.25);color:#6baeff;}
-.chip-rule{background:rgba(46,196,182,.15);color:var(--accent2);}
-.chip-warn{background:rgba(230,57,70,.15);color:#ff7b84;}
+    .login-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
 
-/* CASE */
-.case-banner{background:linear-gradient(135deg,rgba(245,166,35,.1),rgba(245,166,35,.03));border:1px solid rgba(245,166,35,.25);border-radius:13px;padding:22px 24px;margin-bottom:22px;}
-.case-banner-tag{font-size:.68rem;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:8px;}
-.case-banner-title{font-size:1.2rem;font-weight:800;margin-bottom:10px;}
-.case-banner-body{font-size:.88rem;color:#b0c4e8;line-height:1.7;}
-.case-q{font-size:1rem;font-weight:700;color:var(--accent2);margin:20px 0 16px;}
-.reveal-panel{background:rgba(45,198,83,.07);border:1px solid rgba(45,198,83,.22);border-radius:11px;padding:20px 22px;display:none;}
-.reveal-label{font-size:.7rem;font-weight:700;letter-spacing:.12em;color:var(--green);margin-bottom:10px;text-transform:uppercase;}
-.reveal-body{font-size:.88rem;line-height:1.7;color:#d4f5dc;}
-.reveal-body strong{color:#fff;}
-.case-nav{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+    .login-sub {
+      font-size: .85rem;
+      color: #8ea8cc;
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
 
-/* LIVE RESULTS (admin big screen) */
-.live-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:24px;}
-.live-card{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:22px 16px;text-align:center;transition:all .3s;}
-.live-card.leading{border-color:var(--accent);background:rgba(245,166,35,.08);}
-.live-card .lc-letter{font-size:1.8rem;font-weight:900;margin-bottom:6px;}
-.live-card .lc-opt{font-size:.78rem;color:#8ea8cc;margin-bottom:12px;line-height:1.4;}
-.live-card .lc-count{font-size:3rem;font-weight:900;color:var(--accent);}
-.live-card .lc-pct{font-size:.8rem;color:var(--muted);}
-.live-total{font-size:2.8rem;font-weight:900;color:var(--accent);}
+    .input-group {
+      text-align: left;
+      margin-bottom: 18px;
+    }
 
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;z-index:999;background:var(--green);color:#fff;padding:12px 20px;border-radius:9px;font-weight:600;font-size:.88rem;transform:translateY(60px);opacity:0;transition:all .3s;max-width:320px;}
-.toast.show{transform:translateY(0);opacity:1;}
-.toast.error{background:var(--red);}
+    .input-group label {
+      font-size: .78rem;
+      font-weight: 600;
+      color: #8ea8cc;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 8px;
+    }
 
-/* SPINNER */
-.spinner{width:20px;height:20px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;}
-@keyframes spin{to{transform:rotate(360deg);}}
+    .input-group input {
+      width: 100%;
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 10px;
+      padding: 13px 16px;
+      color: #fff;
+      font-size: .95rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border .2s;
+    }
 
-/* ADMIN CONTROLS */
-.admin-bar{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.2);border-radius:11px;padding:16px 20px;margin-bottom:20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-.admin-bar-label{font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-right:4px;}
+    .input-group input:focus {
+      border-color: var(--accent2);
+    }
 
-@media(max-width:600px){
-  .content{padding:16px;}
-  .login-card{padding:32px 22px;}
-  .tabs .tab{padding:12px 14px;font-size:.78rem;}
-}
-</style>
+    .login-error {
+      background: rgba(230, 57, 70, .12);
+      border: 1px solid rgba(230, 57, 70, .3);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: .85rem;
+      color: #ff7b84;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .login-hint {
+      font-size: .78rem;
+      color: #5a7099;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, var(--navy-mid) 0%, #0D2B55 100%);
+      border-bottom: 3px solid var(--accent);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .header-left .sub {
+      font-size: .7rem;
+      color: var(--accent);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .header-left .title {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .role-badge {
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+    }
+
+    .role-admin {
+      background: var(--accent);
+      color: var(--navy);
+    }
+
+    .role-trainee {
+      background: var(--accent2);
+      color: var(--navy);
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 24px;
+      border-radius: 9px;
+      font-size: .9rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--navy);
+    }
+
+    .btn-primary:hover {
+      background: #ffb940;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, .1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, .18);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, .18);
+    }
+
+    .btn-success {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .btn-success:hover {
+      background: #3ddd63;
+    }
+
+    .btn-danger {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .btn-sm {
+      padding: 7px 16px;
+      font-size: .8rem;
+    }
+
+    .btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-full {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 0;
+      background: rgba(255, 255, 255, .04);
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .tab {
+      padding: 14px 24px;
+      font-size: .85rem;
+      font-weight: 600;
+      color: #6B7A99;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all .2s;
+    }
+
+    .tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab-content {
+      display: none;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* CONTENT AREA */
+    .content {
+      padding: 28px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .section-desc {
+      font-size: .85rem;
+      color: #8ea8cc;
+      margin-bottom: 24px;
+    }
+
+    /* CARDS */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 14px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all .2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: 4px 0 0 4px;
+    }
+
+    .card.type-poll::before {
+      background: var(--accent2);
+    }
+
+    .card.type-case::before {
+      background: var(--accent);
+    }
+
+    .card.type-quiz::before {
+      background: var(--red);
+    }
+
+    .card.type-doubt::before {
+      background: #9B59B6;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, .22);
+    }
+
+    .card-badge {
+      font-size: .62rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .badge-poll {
+      background: rgba(46, 196, 182, .15);
+      color: var(--accent2);
+    }
+
+    .badge-case {
+      background: rgba(245, 166, 35, .15);
+      color: var(--accent);
+    }
+
+    .badge-quiz {
+      background: rgba(230, 57, 70, .15);
+      color: #ff7b84;
+    }
+
+    .badge-doubt {
+      background: rgba(155, 89, 182, .15);
+      color: #c39bd3;
+    }
+
+    .card h3 {
+      font-size: .95rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .card p {
+      font-size: .8rem;
+      color: #8ea8cc;
+      line-height: 1.5;
+    }
+
+    .card-time {
+      font-size: .7rem;
+      color: #5a7099;
+      margin-top: 10px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* POLL */
+    .poll-wrap {
+      max-width: 760px;
+    }
+
+    .poll-q {
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 28px;
+    }
+
+    .poll-opts {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .poll-opt {
+      background: rgba(255, 255, 255, .05);
+      border: 2px solid rgba(255, 255, 255, .12);
+      border-radius: 11px;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .poll-opt:hover:not(.voted) {
+      border-color: var(--accent2);
+      background: rgba(46, 196, 182, .07);
+    }
+
+    .poll-opt.selected {
+      border-color: var(--accent2);
+      background: rgba(46, 196, 182, .1);
+    }
+
+    .poll-opt.correct {
+      border-color: var(--green);
+      background: rgba(45, 198, 83, .1);
+    }
+
+    .poll-opt.wrong-sel {
+      border-color: var(--red);
+      background: rgba(230, 57, 70, .08);
+    }
+
+    .poll-opt.voted {
+      cursor: default;
+    }
+
+    .opt-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .85rem;
+      flex-shrink: 0;
+    }
+
+    .poll-opt.selected .opt-letter {
+      background: var(--accent2);
+      color: var(--navy);
+    }
+
+    .poll-opt.correct .opt-letter {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .poll-opt.wrong-sel .opt-letter {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .opt-text {
+      font-size: .9rem;
+      line-height: 1.4;
+    }
+
+    .poll-status {
+      margin-top: 20px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: .88rem;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .1);
+      color: #8ea8cc;
+    }
+
+    .poll-status.success {
+      background: rgba(46, 196, 182, .08);
+      border-color: rgba(46, 196, 182, .25);
+      color: var(--accent2);
+    }
+
+    /* RESULTS BAR */
+    .results-wrap {
+      margin-top: 24px;
+    }
+
+    .result-row {
+      margin-bottom: 14px;
+    }
+
+    .result-label {
+      font-size: .82rem;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .result-bar-bg {
+      background: rgba(255, 255, 255, .07);
+      border-radius: 6px;
+      height: 26px;
+      overflow: hidden;
+    }
+
+    .result-bar {
+      height: 100%;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      font-size: .75rem;
+      font-weight: 700;
+      transition: width .8s cubic-bezier(.4, 0, .2, 1);
+      min-width: 0;
+    }
+
+    .result-bar.bar-correct {
+      background: linear-gradient(90deg, var(--green), #57e37a);
+    }
+
+    .result-bar.bar-normal {
+      background: linear-gradient(90deg, var(--blue), #3a7fd5);
+    }
+
+    .correct-reveal {
+      margin-top: 16px;
+      padding: 14px 18px;
+      background: rgba(45, 198, 83, .1);
+      border: 1px solid rgba(45, 198, 83, .28);
+      border-radius: 10px;
+      font-size: .9rem;
+    }
+
+    .correct-reveal strong {
+      color: var(--green);
+    }
+
+    /* DOUBTS */
+    .doubt-card {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .09);
+      border-radius: 13px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .doubt-card:hover {
+      border-color: #9B59B6;
+      background: rgba(155, 89, 182, .07);
+    }
+
+    .doubt-num {
+      font-size: .72rem;
+      font-weight: 700;
+      color: #9B59B6;
+      margin-bottom: 7px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .doubt-q {
+      font-size: .95rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .doubt-ans {
+      font-size: .86rem;
+      line-height: 1.7;
+      color: #b0c4e8;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      padding-top: 14px;
+      margin-top: 14px;
+      display: none;
+    }
+
+    .doubt-ans strong {
+      color: #fff;
+    }
+
+    .doubt-ans .law {
+      color: var(--accent2);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .8rem;
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: .68rem;
+      font-weight: 700;
+    }
+
+    .chip-law {
+      background: rgba(26, 95, 171, .25);
+      color: #6baeff;
+    }
+
+    .chip-rule {
+      background: rgba(46, 196, 182, .15);
+      color: var(--accent2);
+    }
+
+    .chip-warn {
+      background: rgba(230, 57, 70, .15);
+      color: #ff7b84;
+    }
+
+    /* CASE */
+    .case-banner {
+      background: linear-gradient(135deg, rgba(245, 166, 35, .1), rgba(245, 166, 35, .03));
+      border: 1px solid rgba(245, 166, 35, .25);
+      border-radius: 13px;
+      padding: 22px 24px;
+      margin-bottom: 22px;
+    }
+
+    .case-banner-tag {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .case-banner-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .case-banner-body {
+      font-size: .88rem;
+      color: #b0c4e8;
+      line-height: 1.7;
+    }
+
+    .case-q {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin: 20px 0 16px;
+    }
+
+    .reveal-panel {
+      background: rgba(45, 198, 83, .07);
+      border: 1px solid rgba(45, 198, 83, .22);
+      border-radius: 11px;
+      padding: 20px 22px;
+      display: none;
+    }
+
+    .reveal-label {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      color: var(--green);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .reveal-body {
+      font-size: .88rem;
+      line-height: 1.7;
+      color: #d4f5dc;
+    }
+
+    .reveal-body strong {
+      color: #fff;
+    }
+
+    .case-nav {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    /* LIVE RESULTS (admin big screen) */
+    .live-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .live-card {
+      background: rgba(255, 255, 255, .05);
+      border: 2px solid rgba(255, 255, 255, .1);
+      border-radius: 14px;
+      padding: 22px 16px;
+      text-align: center;
+      transition: all .3s;
+    }
+
+    .live-card.leading {
+      border-color: var(--accent);
+      background: rgba(245, 166, 35, .08);
+    }
+
+    .live-card .lc-letter {
+      font-size: 1.8rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .live-card .lc-opt {
+      font-size: .78rem;
+      color: #8ea8cc;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .live-card .lc-count {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .live-card .lc-pct {
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    .live-total {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      background: var(--green);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 9px;
+      font-weight: 600;
+      font-size: .88rem;
+      transform: translateY(60px);
+      opacity: 0;
+      transition: all .3s;
+      max-width: 320px;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast.error {
+      background: var(--red);
+    }
+
+    /* SPINNER */
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, .2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ADMIN CONTROLS */
+    .admin-bar {
+      background: rgba(245, 166, 35, .08);
+      border: 1px solid rgba(245, 166, 35, .2);
+      border-radius: 11px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .admin-bar-label {
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+
+    @media(max-width:600px) {
+      .content {
+        padding: 16px;
+      }
+
+      .login-card {
+        padding: 32px 22px;
+      }
+
+      .tabs .tab {
+        padding: 12px 14px;
+        font-size: .78rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ══ LOGIN VIEW ══ -->
-<div class="view active" id="view-login">
-  <div class="login-wrap">
-    <div class="login-card">
-      <div class="login-logo">⚖️</div>
-      <div class="login-title">GST Refund Training</div>
-      <div class="login-sub">NACIN Palasamudram · 20.08.2026<br>Enter your credentials to join the session</div>
-      <div class="login-error" id="login-error">Invalid username or password. Please try again.</div>
-      <div class="input-group">
-        <label>Username</label>
-        <input type="text" id="inp-user" placeholder="officer / admin" autocomplete="username" />
+  <!-- ══ LOGIN VIEW ══ -->
+  <div class="view active" id="view-login">
+    <div class="login-wrap">
+      <div class="login-card">
+        <div class="login-logo">⚖️</div>
+        <div class="login-title">GST Refund Training</div>
+        <div class="login-sub">NACIN Palasamudram · 20.08.2026<br>Enter your credentials to join the session</div>
+        <div class="login-error" id="login-error">Invalid username or password. Please try again.</div>
+        <div class="input-group">
+          <label>Username</label>
+          <input type="text" id="inp-user" placeholder="officer / admin" autocomplete="username" />
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="inp-pass" placeholder="Enter session password" autocomplete="current-password" />
+        </div>
+        <button class="btn btn-primary btn-full" onclick="doLogin()" id="login-btn">Sign In →</button>
+        <div class="login-hint">
+          <strong style="color:#8ea8cc;">Trainee login:</strong> username <code
+            style="color:var(--accent2)">officer</code><br>
+          Password shared by instructor at start of session.
+        </div>
       </div>
-      <div class="input-group">
-        <label>Password</label>
-        <input type="password" id="inp-pass" placeholder="Enter session password" autocomplete="current-password" />
+    </div>
+  </div>
+
+  <!-- ══ TRAINEE VIEW ══ -->
+  <div class="view" id="view-trainee">
+    <div class="header">
+      <div class="header-left">
+        <div class="sub">GST Refund Training · NACIN</div>
+        <div class="title">Session Portal</div>
       </div>
-      <button class="btn btn-primary btn-full" onclick="doLogin()" id="login-btn">Sign In →</button>
-      <div class="login-hint">
-        <strong style="color:#8ea8cc;">Trainee login:</strong> username <code style="color:var(--accent2)">officer</code><br>
-        Password shared by instructor at start of session.
+      <div class="header-right">
+        <span class="role-badge role-trainee">TRAINEE</span>
+        <button class="btn btn-secondary btn-sm" onclick="doLogout()">Sign Out</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('trainee','t-polls')">🗳 Polls</div>
+      <div class="tab" onclick="switchTab('trainee','t-doubts')">❓ Doubts</div>
+      <div class="tab" onclick="switchTab('trainee','t-cases')">📁 Cases</div>
+    </div>
+
+    <!-- Trainee: Polls -->
+    <div class="tab-content active" id="t-polls">
+      <div class="content">
+        <div class="section-title">Live Polls</div>
+        <p class="section-desc">Select a poll when the instructor opens it. Your response is anonymous.</p>
+        <div id="trainee-polls-list"></div>
+      </div>
+    </div>
+
+    <!-- Trainee: Doubts (questions visible, answers hidden) -->
+    <div class="tab-content" id="t-doubts">
+      <div class="content">
+        <div class="section-title">Doubts Clinic</div>
+        <p class="section-desc">10 questions from the batch. Answers will be revealed by the instructor during
+          discussion.</p>
+        <div id="trainee-doubts-list"></div>
+      </div>
+    </div>
+
+    <!-- Trainee: Cases (scenario visible, answer hidden) -->
+    <div class="tab-content" id="t-cases">
+      <div class="content">
+        <div class="section-title">Field Cases</div>
+        <p class="section-desc">Read each scenario and think through your answer. The instructor will reveal the correct
+          position.</p>
+        <div id="trainee-cases-list"></div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- ══ TRAINEE VIEW ══ -->
-<div class="view" id="view-trainee">
-  <div class="header">
-    <div class="header-left">
-      <div class="sub">GST Refund Training · NACIN</div>
-      <div class="title">Session Portal</div>
+  <!-- ══ ADMIN VIEW ══ -->
+  <div class="view" id="view-admin">
+    <div class="header">
+      <div class="header-left">
+        <div class="sub">Instructor Console · GST Refund Training</div>
+        <div class="title">Admin Dashboard</div>
+      </div>
+      <div class="header-right">
+        <span class="role-badge role-admin">INSTRUCTOR</span>
+        <button class="btn btn-secondary btn-sm" onclick="doLogout()">Sign Out</button>
+      </div>
     </div>
-    <div class="header-right">
-      <span class="role-badge role-trainee">TRAINEE</span>
-      <button class="btn btn-secondary btn-sm" onclick="doLogout()">Sign Out</button>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('admin','a-polls')">🗳 Polls &amp; Results</div>
+      <div class="tab" onclick="switchTab('admin','a-doubts')">❓ Doubts</div>
+      <div class="tab" onclick="switchTab('admin','a-cases')">📁 Cases</div>
     </div>
-  </div>
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('trainee','t-polls')">🗳 Polls</div>
-    <div class="tab" onclick="switchTab('trainee','t-doubts')">❓ Doubts</div>
-    <div class="tab" onclick="switchTab('trainee','t-cases')">📁 Cases</div>
-  </div>
 
-  <!-- Trainee: Polls -->
-  <div class="tab-content active" id="t-polls">
-    <div class="content">
-      <div class="section-title">Live Polls</div>
-      <p class="section-desc">Select a poll when the instructor opens it. Your response is anonymous.</p>
-      <div id="trainee-polls-list"></div>
+    <!-- Admin: Polls -->
+    <div class="tab-content active" id="a-polls">
+      <div class="content">
+        <div class="section-title">Poll Console</div>
+        <p class="section-desc">Live vote counts refresh every 5 seconds. Reveal answers only when ready to discuss.</p>
+        <div id="admin-polls-list"></div>
+      </div>
     </div>
-  </div>
 
-  <!-- Trainee: Doubts (questions visible, answers hidden) -->
-  <div class="tab-content" id="t-doubts">
-    <div class="content">
-      <div class="section-title">Doubts Clinic</div>
-      <p class="section-desc">10 questions from the batch. Answers will be revealed by the instructor during discussion.</p>
-      <div id="trainee-doubts-list"></div>
+    <!-- Admin: Doubts (answers visible) -->
+    <div class="tab-content" id="a-doubts">
+      <div class="content">
+        <div class="section-title">Doubts Clinic — Full Answers</div>
+        <p class="section-desc">Click each doubt to expand the authoritative answer. Trainees see questions only.</p>
+        <div id="admin-doubts-list"></div>
+      </div>
     </div>
-  </div>
 
-  <!-- Trainee: Cases (scenario visible, answer hidden) -->
-  <div class="tab-content" id="t-cases">
-    <div class="content">
-      <div class="section-title">Field Cases</div>
-      <p class="section-desc">Read each scenario and think through your answer. The instructor will reveal the correct position.</p>
-      <div id="trainee-cases-list"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ ADMIN VIEW ══ -->
-<div class="view" id="view-admin">
-  <div class="header">
-    <div class="header-left">
-      <div class="sub">Instructor Console · GST Refund Training</div>
-      <div class="title">Admin Dashboard</div>
-    </div>
-    <div class="header-right">
-      <span class="role-badge role-admin">INSTRUCTOR</span>
-      <button class="btn btn-secondary btn-sm" onclick="doLogout()">Sign Out</button>
-    </div>
-  </div>
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('admin','a-polls')">🗳 Polls &amp; Results</div>
-    <div class="tab" onclick="switchTab('admin','a-doubts')">❓ Doubts</div>
-    <div class="tab" onclick="switchTab('admin','a-cases')">📁 Cases</div>
-  </div>
-
-  <!-- Admin: Polls -->
-  <div class="tab-content active" id="a-polls">
-    <div class="content">
-      <div class="section-title">Poll Console</div>
-      <p class="section-desc">Live vote counts refresh every 5 seconds. Reveal answers only when ready to discuss.</p>
-      <div id="admin-polls-list"></div>
+    <!-- Admin: Cases (answers visible) -->
+    <div class="tab-content" id="a-cases">
+      <div class="content">
+        <div class="section-title">Field Cases — With Answers</div>
+        <p class="section-desc">Trainees see the scenario only. Click Reveal Answer when ready.</p>
+        <div id="admin-cases-list"></div>
+      </div>
     </div>
   </div>
 
-  <!-- Admin: Doubts (answers visible) -->
-  <div class="tab-content" id="a-doubts">
-    <div class="content">
-      <div class="section-title">Doubts Clinic — Full Answers</div>
-      <p class="section-desc">Click each doubt to expand the authoritative answer. Trainees see questions only.</p>
-      <div id="admin-doubts-list"></div>
-    </div>
-  </div>
+  <div class="toast" id="toast"></div>
 
-  <!-- Admin: Cases (answers visible) -->
-  <div class="tab-content" id="a-cases">
-    <div class="content">
-      <div class="section-title">Field Cases — With Answers</div>
-      <p class="section-desc">Trainees see the scenario only. Click Reveal Answer when ready.</p>
-      <div id="admin-cases-list"></div>
-    </div>
-  </div>
-</div>
+  <script>
+    // ════════════════════════════════════════════════════
+    //  DATA
+    // ════════════════════════════════════════════════════
+    const DOUBTS = [
+      { q: "For ZRS without payment of tax, if some shipping bills are excluded due to time-barring, will there be any subsequent reduction in Net ITC?", ans: `<strong>No — Net ITC is NOT reduced</strong> on account of time-barred shipping bills being excluded from the eligible turnover of zero-rated supply.<br><br>The formula under <span class="law">Rule 89(4)</span> is: <em>Refund = (Turnover of ZRS ÷ Adjusted Total Turnover) × Net ITC</em>.<br><br>When a shipping bill is time-barred, it drops out of the <strong>numerator</strong> (turnover of zero-rated supply), reducing the refund amount proportionately — but <strong>Net ITC remains unchanged</strong>. Net ITC is computed on the basis of ITC availed for the relevant period and is independent of which specific shipping bills are admissible for refund.<br><br><span class="chip chip-law">Section 54 CGST Act</span> <span class="chip chip-rule">Rule 89(4)</span> <span class="chip chip-rule">Circular 125/44/2019</span>` },
+      { q: "In ZRS export of goods, if the taxpayer considered invoice value rather than FOB, and the rule says minimum of invoice and FOB is considered — will there be any change in Net ITC?", ans: `<strong>No change in Net ITC</strong> — only the turnover of zero-rated supply figure changes.<br><br>As per <span class="law">Rule 89(4)</span>, turnover of ZRS of goods is the <strong>lower of invoice value or FOB value</strong>. If FOB is lower, the ZRS turnover decreases, reducing the refund proportionally (smaller numerator) — but Net ITC remains the ITC availed during the period.<br><br><strong>Key point for verification report:</strong> The verifying officer must compare GSTR-1 invoice values against shipping bill FOB values from ICEGATE data and confirm which is lower.<br><br><span class="chip chip-rule">Rule 89(4)</span> <span class="chip chip-rule">Circular 147/03/2021</span>` },
+      { q: "How do you verify if a particular invoice in Annexure B or GSTR-2B is actually availed in GSTR-3B for that relevant period, since GSTR-3B is a summary return without invoice details?", ans: `This is a genuine challenge since <strong>GSTR-3B does not carry invoice-level data</strong>. The verification approach:<br><br><strong>1. Period-wise totals:</strong> Compare total ITC in <span class="law">GSTR-3B Table 4</span> with the sum of ITC in GSTR-2B for that period. Excess in 3B over 2B signals risk.<br><br><strong>2. GSTN Back-Office (BO) Tool:</strong> Use Record Search → Returns → GSTR-3B vs GSTR-2B comparison. This gives a consolidated difference figure.<br><br><strong>3. Circular 197/09/2023:</strong> Refund of accumulated ITC is to be granted on the basis of GSTR-2B. Verify availed ITC ≤ GSTR-2B ITC for the period.<br><br><span class="chip chip-rule">Circular 197/09/2023</span> <span class="chip chip-rule">Circular 125/44/2019</span> <span class="chip chip-warn">GSTN BO Portal</span>` },
+      { q: "For what refund cases is Rule 92(1A) applicable? Can PMT-03 be issued without an undertaking from the taxpayer?", ans: `<span class="law">Rule 92(1A)</span> deals with refund of <strong>IGST paid on exports of goods</strong> processed through ICEGATE/customs — specifically for <em>erroneous refunds</em> that need recovery via re-credit to the electronic credit ledger.<br><br><strong>PMT-03 without undertaking:</strong> An undertaking is typically required under <span class="law">Rule 91(3)</span> for provisional refunds. However, for recovery of erroneous refund under Rule 92(1A), the action flows from the department's suo-motu finding — undertaking is not a prerequisite; the SCN and adjudication process under <span class="law">Section 73/74</span> governs recovery.<br><br><span class="chip chip-rule">Rule 92(1A)</span> <span class="chip chip-rule">Rule 86(4A) &amp; (4B)</span> <span class="chip chip-law">Section 73/74</span>` },
+      { q: "Can refund under Section 54 be given to a cancelled taxpayer?", ans: `<strong>It depends on the reason for cancellation and return filing status.</strong><br><br><strong>Cancelled Suo-motu by Department → NOT eligible.</strong> Per SOP para 5.1(b), such taxpayers are ineligible for refund.<br><br><strong>Voluntarily cancelled → May be eligible, subject to:</strong><br>• All due returns filed, <em>including GSTR-10</em>.<br>• <span class="law">Rule 21A</span> bars refund during suspension — but a finally cancelled (not merely suspended) registration may claim refund of accumulated ITC for the pre-cancellation period.<br><br><strong>Officer must record:</strong> reason for cancellation, date, GSTR-10 status, and whether pending returns exist.<br><br><span class="chip chip-rule">Rule 21A</span> <span class="chip chip-law">Section 54(3)</span> <span class="chip chip-warn">SOP Para 5.1(b)</span>` },
+      { q: "Do SEZ units availing ITC from their Head Office (HO) get a refund of accumulated ITC?", ans: `<strong>An SEZ unit is a separate registered entity.</strong> ITC received from HO via <span class="law">Section 20 ISD</span> or as cross-charges is credited to the SEZ unit's GSTIN. If the SEZ unit makes zero-rated supplies, accumulated ITC can be claimed as refund under <span class="law">Section 54(3)(ii)</span> or <span class="law">Rule 89(4)</span>.<br><br>However, it is the <em>supplying entity</em> (not the buying SEZ unit) that claims refund on ZRS to SEZ. An SEZ unit receiving supplies does not claim refund on its own ITC unless it makes onward taxable/ZRS supplies.<br><br><strong>Key check:</strong> Is the GSTIN of the applicant the SEZ unit or its HO? How was ITC distributed — ISD or direct availing?<br><br><span class="chip chip-law">Section 54(3)</span> <span class="chip chip-law">Section 20 (ISD)</span> <span class="chip chip-rule">Rule 89(4)</span>` },
+      { q: "How to deal with refunds related to mixed invoices in inverted duty structure cases — e.g., one invoice with goods at multiple different tax rates?", ans: `This requires careful <strong>line-item level analysis</strong>.<br><br><strong>Step 1:</strong> Identify HSN-wise breakup of goods within the mixed invoice from GSTR-2A/2B.<br><br><strong>Step 2:</strong> Per <span class="law">Circular 125/2019 para 54(a)</span>, ALL ITC availed is included in Net ITC irrespective of rate differential. The formula naturally limits refund via the turnover ratio.<br><br><strong>Step 3:</strong> Officer must record: which HSN codes attract what rate, what the outward supply rate is, and how ITC was bifurcated if at all.<br><br><span class="law">Circular 181/13/2022</span> addresses IDS refund on specific goods in chapters 15 &amp; 27 — apply where applicable.<br><br><span class="chip chip-rule">Rule 89(5)</span> <span class="chip chip-rule">Circular 125/2019 para 54(a)</span> <span class="chip chip-rule">Circular 181/13/2022</span>` },
+      { q: "Refunds of Cess — how are they handled?", ans: `Compensation Cess forms a separate ledger head. Where a taxpayer pays cess on inputs (e.g., coal, tobacco) and makes exports or ZRS, accumulated <em>input cess credit</em> in the Cess ledger can be claimed as refund. The Rule 89(4)/(5) formula is applied <em>separately for cess</em>.<br><br><strong>Key points:</strong><br>• Cess ITC cannot offset CGST/SGST/IGST output liability — only cess output liability.<br>• Excess cess credit is refundable.<br>• Verify cess head separately in the credit ledger — backed by 2B/2A invoices.<br>• The GST portal has a separate field for cess — ensure amounts are correctly entered.<br><br><span class="chip chip-law">Compensation Cess Act 2017</span> <span class="chip chip-law">Section 54 CGST</span> <span class="chip chip-rule">Rule 89</span>` },
+      { q: "How is 'Turnover of Zero Rated Supply of Services' calculated for refund in export of services? Is it based on declared supply value in GSTR-1/3B or on actual foreign exchange received?", ans: `<strong>It is based on actual foreign exchange received — NOT on declared supply value in returns.</strong><br><br><strong>Formula under <span class="law">Rule 89(4)</span>:</strong><br><br>= Payments received during the relevant period for ZRS of services<br>+ Advance received in previous period for which supply has been completed during the relevant period<br>− Advance received during the relevant period for which supply has not yet been completed<br><br><strong>Key implication:</strong> Even if a taxpayer declared export services of ₹1 crore in GSTR-1, if FIRC/BRC evidences only ₹70 lakh received, the ZRS turnover for refund is <strong>₹70 lakh</strong> (adjusted for advances).<br><br><strong>Verification:</strong> Taxpayer must submit a statement of invoices with corresponding FIRC/BRC values — the officer must compute ZRS turnover from this, not from GSTR-1/3B figures.<br><br><span class="chip chip-rule">Rule 89(4) — ZRS of services</span> <span class="chip chip-rule">Circular 125/2019</span> <span class="chip chip-warn">FIRC/BRC statement is mandatory</span>` },
+      { q: "Queries related to Circular 188/20/2022-GST — procedure for unregistered persons to claim a GST refund.", ans: `<strong>Circular 188/20/2022</strong> prescribes the procedure for unregistered buyers whose contracts were terminated after paying GST.<br><br><strong>Key checks:</strong><br>• Temporary registration obtained by the unregistered person for filing refund.<br>• Documents as per <span class="law">Rule 89(2)(ka) and (kb)</span> — agreement/contract, proof of cancellation, proof of payment of tax by supplier to government, bank statement.<br>• Certificate from the <em>supplier's authorised signatory</em> confirming tax was paid and refund will not be claimed by supplier.<br>• <strong>Critical:</strong> Refund must not exceed the amount actually <em>deposited by the supplier with the government</em> — not what was collected from the unregistered person. Excess over deposited amount = unjust enrichment.<br><br><span class="chip chip-rule">Rule 89(2)(ka)(kb)</span> <span class="chip chip-rule">Circular 188/20/2022</span> <span class="chip chip-warn">High Risk — all precautions mandatory</span>` }
+    ];
 
-<div class="toast" id="toast"></div>
+    const CASES = [
+      { tag: "FIELD CASE — Issue 6", title: "Fake Firm: Iron Scrap TDS Refund Under Cash Ledger", body: `W.e.f. October 2024, TDS was mandated for scrap dealers (Section 51), causing accumulation of cash ledger balances even in fake/fraudulent firms. Several such firms applied for refund of excess cash balance, and in some instances, refunds were sanctioned without adequate scrutiny of turnover patterns.`, q: "🤔 An iron scrap dealer's turnover jumped from ₹20 lakhs to ₹18 crores in one year, with 95% of liability discharged by ITC and TDS credit accumulated at ₹18 lakhs. They apply for refund of cash ledger balance. What should you do?", ans: `<strong>This is a RED FLAG — do NOT sanction without physical verification.</strong><br><br><strong>Action required:</strong><br>1. Check BO portal for year-on-year turnover pattern in GSTR-1.<br>2. Exponential unexplained rise in turnover with most liability discharged through ITC (not cash) = <strong>fake firm indicator</strong>.<br>3. <strong>Immediate physical verification</strong> of business premises, books, and genuineness of purchases before processing the refund.<br>4. Initiate intelligence/investigation parallel to refund proceeding — flag for urgent verification.<br><br><strong>Office Instruction Issue 6:</strong> Physical verification is mandatory in such cases. Never sanction on portal data alone when red flags exist.<br><br><span class="chip chip-warn">Section 51 TDS</span> <span class="chip chip-law">Section 54(10) — Withholding</span>` },
+      { tag: "FIELD CASE — Issue 10", title: "Net ITC Denied for Lower-Rate Inputs — IDS Refund Error", body: `During audit of IDS refund orders, it was found that sanctioning authorities were denying ITC of GST paid on inputs procured at rates equal to or lower than the output supply rate — reasoning that such inputs do not contribute to the "inversion" and hence their ITC should not be in Net ITC.`, q: "🤔 A taxpayer manufactures goods at 5% GST and procures some raw materials at 5% and others at 12%. The sanctioning authority excluded the ITC on 5% inputs from Net ITC in the Rule 89(5) formula. Is this correct?", ans: `<strong>This is INCORRECT and amounts to erroneous denial of legitimate refund.</strong><br><br><strong>Correct position per Circular 125/44/2019, para 54(a):</strong> All ITC availed during the relevant period — regardless of whether the input tax rate is higher, equal, or lower than the output rate — <em>must be included in Net ITC</em>.<br><br><strong>Why:</strong> The Rule 89(5) formula inherently limits the refund by applying the ratio of inverted turnover to total adjusted turnover. Pre-filtering ITC based on rate comparison is an addition not prescribed in law.<br><br><strong>Corrective action:</strong> Such orders must be reviewed and corrected. The Office Instruction specifically flags this as a recurring error.<br><br><span class="chip chip-rule">Rule 89(5)</span> <span class="chip chip-rule">Circular 125/2019 para 54(a)</span> <span class="chip chip-warn">Common error — must correct</span>` },
+      { tag: "FIELD CASE — Circular 188/20/2022", title: "Unregistered Person Refund — Unjust Enrichment of Supplier", body: `A builder collected ₹50 lakh as advance from an unregistered buyer under a construction agreement, charging GST on the full amount. The agreement was later cancelled. The supplier issued invoices progressively against earlier advances, depositing GST with government only on ₹35 lakh worth of invoices raised. The buyer now claims refund for GST on the full ₹50 lakh.`, q: "🤔 The unregistered buyer claims refund of GST on ₹50 lakh (full agreement value). The supplier deposited GST only on ₹35 lakh with the government. For what amount can refund be granted?", ans: `<strong>Refund can only be granted for the GST deposited with the government — i.e., on ₹35 lakh, NOT ₹50 lakh.</strong><br><br>The GST on the balance ₹15 lakh was collected by the supplier but <em>not deposited with the government</em>. Granting refund on ₹50 lakh would <strong>unjustly enrich the supplier</strong>.<br><br><strong>Key checks:</strong><br>• Certificate from supplier's authorised signatory must state the GST deposited amount.<br>• Cross-verify with supplier's GSTR-1 and 3B to confirm invoice values and tax deposited.<br>• Refund is capped at government receipts — not at what the buyer paid to the supplier.<br><br><span class="chip chip-rule">Circular 188/20/2022</span> <span class="chip chip-rule">Rule 89(2)(ka)(kb)</span> <span class="chip chip-warn">Unjust Enrichment check mandatory</span>` },
+      { tag: "FIELD CASE — Issue 3", title: "Section 16(4) Regularised — Incorrect Pre-deposit Refund", body: `A taxpayer was served an SCN for violation of Section 16(4). The taxpayer paid the demand during appeal. Subsequently, Section 16(5) and 16(6) were inserted retrospectively, regularising the ITC claim. The taxpayer now claims refund of the tax so paid.`, q: "🤔 Should refund be granted for the tax paid on account of a Section 16(4) violation that was subsequently regularised by Section 16(5)/16(6)?", ans: `<strong>No — refund in such cases is NOT admissible as per Notification 237/2024.</strong><br><br>When Section 16(5) and 16(6) were inserted to regularise ITC claims, it was simultaneously clarified (vide Notification 237/2024) that <em>amounts already paid on account of Section 16(4) violations cannot be refunded</em>. The insertion of 16(5)/16(6) was prospective — it did not create a ground for refund of past payments made under demand orders.<br><br><strong>Officer action:</strong> Reject such refund applications with specific reference to Notification 237/2024. Pass a speaking order addressing the taxpayer's submissions.<br><br><span class="chip chip-law">Section 16(5)/16(6)</span> <span class="chip chip-rule">Notification 237/2024</span> <span class="chip chip-warn">Do NOT sanction</span>` },
+      { tag: "FIELD CASE — SOP Para 5.1(b)", title: "Cancelled Registration — SEZ Refund Application", body: `An SEZ supplier's GST registration was cancelled suo-motu by the department due to non-filing of returns for over 6 months. GSTR-10 (final return) has not been filed. The range officer inspected the premises and found the business was operational. The officer is recommending the refund for accumulated ITC on ZRS exports.`, q: "🤔 Should the verifying officer recommend this refund application for processing?", ans: `<strong>No — this refund CANNOT be recommended. Two disqualifying conditions exist.</strong><br><br><strong>Disqualification 1 — Suo-motu cancellation:</strong> Per SOP Para 5.1(b), a taxpayer whose registration was cancelled suo-motu is NOT eligible for refund.<br><br><strong>Disqualification 2 — GSTR-10 not filed:</strong> Even for voluntarily cancelled taxpayers, the final return GSTR-10 must be filed before refund is admissible.<br><br><strong>What the officer must record:</strong> Reason for cancellation, date, GSTR-10 status, and cite these as bars to the refund in the verification report.<br><br><span class="chip chip-rule">Rule 21A</span> <span class="chip chip-warn">Suo-motu cancellation = ineligible</span> <span class="chip chip-warn">GSTR-10 mandatory</span>` },
+      { tag: "FIELD CASE — Issue 9 / Rule 96B", title: "BRC/FIRC Not Submitted — Erroneous Refund SCN Window Closing", body: `An exporter received refund of IGST paid on export of goods 18 months ago. It is now found that BRC/FIRC was never obtained on record, and export proceeds have not been realised within the period prescribed under Rule 96B (9 months from export date, extendable to 15 months with RBI permission). No extension was obtained from RBI.`, q: "🤔 What is the correct action and what is the critical time constraint?", ans: `<strong>Issue SCN for erroneous refund recovery immediately — this is time-bound.</strong><br><br><strong>Legal position under Rule 96B:</strong> If export proceeds are not realised within the prescribed period, the refund of IGST is treated as <em>erroneous refund</em> and is recoverable with interest.<br><br><strong>Time constraint:</strong> Recovery is governed by <span class="law">Section 73/74</span> — SCN must be issued within <em>3 years from the date of erroneous refund</em> (5 years if fraud). Since 18 months have passed, <strong>immediate action is critical</strong>.<br><br><strong>Process:</strong><br>1. Issue letter demanding BRC/FIRC immediately.<br>2. If not submitted, issue SCN under Rule 96B read with Section 73 for recovery + interest.<br>3. Record original refund order date, amount, and cite Rule 96B as basis of recovery.<br><br><span class="chip chip-rule">Rule 96B</span> <span class="chip chip-law">Section 73 (3-year SCN)</span> <span class="chip chip-warn">Time-bound — act now</span>` },
+      { tag: "DOUBT 7 EXPANDED", title: "Mixed Invoice in IDS Claim — Multi-Rate Goods Worked Example", body: `A taxpayer manufactures edible oil (output rate: 5%) and receives a single invoice containing: groundnuts at 5% GST (₹10 lakh), packaging material (tin) at 18% GST (₹2 lakh), and chemicals at 18% GST (₹1 lakh). The taxpayer claims IDS refund including ITC on all three items.`, q: "🤔 How should the verifying officer treat each line item's ITC for the purpose of IDS refund?", ans: `<strong>All three ITC amounts form part of Net ITC — per Circular 125/2019 para 54(a).</strong><br><br><strong>Line-item analysis:</strong><br>• Groundnuts at 5%: Same rate as output — no inversion, but ITC is still included in Net ITC per Circular 125/2019 para 54(a).<br>• Tin packaging at 18%: Higher rate than output (5%) — classic IDS, ITC included.<br>• Chemicals at 18%: Higher rate than output (5%) — ITC included.<br><br><strong>Refund amount</strong> is governed by the Rule 89(5) formula applied to aggregate Net ITC and aggregate turnover of inverted rated supply — NOT calculated item-by-item.<br><br><strong>Officer's verification note must state:</strong> HSN codes, rates on each item, outward supply rate, and confirm all ITC included in Net ITC per Circular 125/2019 para 54(a).<br><br><span class="chip chip-rule">Rule 89(5)</span> <span class="chip chip-rule">Circular 125/2019 para 54(a)</span> <span class="chip chip-rule">Circular 181/13/2022</span>` },
+      { tag: "FIELD CASE — Issue 1", title: "Difference in tax liability GSTR-1 vs GSTR-3B and excess ITC in GSTR-3B vs GSTR-2A", body: `While processing the refund of M/s XYZ in 2026 you find that there is a difference of Rs 10k each for 2017-18, 18-19, 19-20 and Rs 50K for 2024-25 in GSTR-1 vs 3B and Rs 5lacs difference in GSTR-3B vs GSTR2A for each year from 2018-19 to 2024-25`, q: "🤔 what will be your course of action while processing the refund?", ans: `<strong> First for 1 vs 3B, its not barred by time and hence a SCN should be issued informing the taxpayer that why his refund should not be withheld. For 3B vs 2A, the time barred amounts should be left and for the remaining amount, it should be taken up through a letter and subsequently SCN, per se it will not affect the refund` },
+      { tag: "FIELD CASE — Issue 8", title: "Unnecessary Documents — TDS Certificate Demanded for Cash Ledger Refund", body: `A taxpayer applied for refund of excess balance in electronic cash ledger, accumulated due to TDS under Section 51. The sanctioning authority raised a deficiency memo (RFD-03) seeking the TDS certificate from the deductor as a mandatory document.`, q: "🤔 Is the demand for TDS certificate valid? What is the correct position?", ans: `<strong>No — this is an undue and impermissible document demand.</strong><br><br>The amount of TDS credit and cash accumulation is <em>directly visible on the GSTN Back-Office (BO) portal</em> and is auto-populated in the taxpayer's electronic cash ledger. No provision in Circular 125/2019 or the CGST Rules requires submission of TDS certificate for refund of excess cash ledger balance.<br><br><strong>Office Instruction Issue 8:</strong> No documents not mentioned in the circular/guidelines should be sought. Asking for TDS certificate violates this instruction and causes unnecessary harassment.<br><br><strong>Corrective action:</strong> Withdraw the deficiency memo insofar as it demands the TDS certificate. Process based on portal data. If there is genuine doubt, verify via BO portal.<br><br><span class="chip chip-rule">Circular 125/44/2019</span> <span class="chip chip-law">Section 51 TDS</span> <span class="chip chip-warn">Facilitation — no undue demands</span>` }
+    ];
 
-<script>
-// ════════════════════════════════════════════════════
-//  DATA
-// ════════════════════════════════════════════════════
-const DOUBTS = [
-  { q:"For ZRS without payment of tax, if some shipping bills are excluded due to time-barring, will there be any subsequent reduction in Net ITC?", ans:`<strong>No — Net ITC is NOT reduced</strong> on account of time-barred shipping bills being excluded from the eligible turnover of zero-rated supply.<br><br>The formula under <span class="law">Rule 89(4)</span> is: <em>Refund = (Turnover of ZRS ÷ Adjusted Total Turnover) × Net ITC</em>.<br><br>When a shipping bill is time-barred, it drops out of the <strong>numerator</strong> (turnover of zero-rated supply), reducing the refund amount proportionately — but <strong>Net ITC remains unchanged</strong>. Net ITC is computed on the basis of ITC availed for the relevant period and is independent of which specific shipping bills are admissible for refund.<br><br><span class="chip chip-law">Section 54 CGST Act</span> <span class="chip chip-rule">Rule 89(4)</span> <span class="chip chip-rule">Circular 125/44/2019</span>` },
-  { q:"In ZRS export of goods, if the taxpayer considered invoice value rather than FOB, and the rule says minimum of invoice and FOB is considered — will there be any change in Net ITC?", ans:`<strong>No change in Net ITC</strong> — only the turnover of zero-rated supply figure changes.<br><br>As per <span class="law">Rule 89(4)</span>, turnover of ZRS of goods is the <strong>lower of invoice value or FOB value</strong>. If FOB is lower, the ZRS turnover decreases, reducing the refund proportionally (smaller numerator) — but Net ITC remains the ITC availed during the period.<br><br><strong>Key point for verification report:</strong> The verifying officer must compare GSTR-1 invoice values against shipping bill FOB values from ICEGATE data and confirm which is lower.<br><br><span class="chip chip-rule">Rule 89(4)</span> <span class="chip chip-rule">Circular 147/03/2021</span>` },
-  { q:"How do you verify if a particular invoice in Annexure B or GSTR-2B is actually availed in GSTR-3B for that relevant period, since GSTR-3B is a summary return without invoice details?", ans:`This is a genuine challenge since <strong>GSTR-3B does not carry invoice-level data</strong>. The verification approach:<br><br><strong>1. Period-wise totals:</strong> Compare total ITC in <span class="law">GSTR-3B Table 4</span> with the sum of ITC in GSTR-2B for that period. Excess in 3B over 2B signals risk.<br><br><strong>2. GSTN Back-Office (BO) Tool:</strong> Use Record Search → Returns → GSTR-3B vs GSTR-2B comparison. This gives a consolidated difference figure.<br><br><strong>3. Circular 197/09/2023:</strong> Refund of accumulated ITC is to be granted on the basis of GSTR-2B. Verify availed ITC ≤ GSTR-2B ITC for the period.<br><br><span class="chip chip-rule">Circular 197/09/2023</span> <span class="chip chip-rule">Circular 125/44/2019</span> <span class="chip chip-warn">GSTN BO Portal</span>` },
-  { q:"For what refund cases is Rule 92(1A) applicable? Can PMT-03 be issued without an undertaking from the taxpayer?", ans:`<span class="law">Rule 92(1A)</span> deals with refund of <strong>IGST paid on exports of goods</strong> processed through ICEGATE/customs — specifically for <em>erroneous refunds</em> that need recovery via re-credit to the electronic credit ledger.<br><br><strong>PMT-03 without undertaking:</strong> An undertaking is typically required under <span class="law">Rule 91(3)</span> for provisional refunds. However, for recovery of erroneous refund under Rule 92(1A), the action flows from the department's suo-motu finding — undertaking is not a prerequisite; the SCN and adjudication process under <span class="law">Section 73/74</span> governs recovery.<br><br><span class="chip chip-rule">Rule 92(1A)</span> <span class="chip chip-rule">Rule 86(4A) &amp; (4B)</span> <span class="chip chip-law">Section 73/74</span>` },
-  { q:"Can refund under Section 54 be given to a cancelled taxpayer?", ans:`<strong>It depends on the reason for cancellation and return filing status.</strong><br><br><strong>Cancelled Suo-motu by Department → NOT eligible.</strong> Per SOP para 5.1(b), such taxpayers are ineligible for refund.<br><br><strong>Voluntarily cancelled → May be eligible, subject to:</strong><br>• All due returns filed, <em>including GSTR-10</em>.<br>• <span class="law">Rule 21A</span> bars refund during suspension — but a finally cancelled (not merely suspended) registration may claim refund of accumulated ITC for the pre-cancellation period.<br><br><strong>Officer must record:</strong> reason for cancellation, date, GSTR-10 status, and whether pending returns exist.<br><br><span class="chip chip-rule">Rule 21A</span> <span class="chip chip-law">Section 54(3)</span> <span class="chip chip-warn">SOP Para 5.1(b)</span>` },
-  { q:"Do SEZ units availing ITC from their Head Office (HO) get a refund of accumulated ITC?", ans:`<strong>An SEZ unit is a separate registered entity.</strong> ITC received from HO via <span class="law">Section 20 ISD</span> or as cross-charges is credited to the SEZ unit's GSTIN. If the SEZ unit makes zero-rated supplies, accumulated ITC can be claimed as refund under <span class="law">Section 54(3)(ii)</span> or <span class="law">Rule 89(4)</span>.<br><br>However, it is the <em>supplying entity</em> (not the buying SEZ unit) that claims refund on ZRS to SEZ. An SEZ unit receiving supplies does not claim refund on its own ITC unless it makes onward taxable/ZRS supplies.<br><br><strong>Key check:</strong> Is the GSTIN of the applicant the SEZ unit or its HO? How was ITC distributed — ISD or direct availing?<br><br><span class="chip chip-law">Section 54(3)</span> <span class="chip chip-law">Section 20 (ISD)</span> <span class="chip chip-rule">Rule 89(4)</span>` },
-  { q:"How to deal with refunds related to mixed invoices in inverted duty structure cases — e.g., one invoice with goods at multiple different tax rates?", ans:`This requires careful <strong>line-item level analysis</strong>.<br><br><strong>Step 1:</strong> Identify HSN-wise breakup of goods within the mixed invoice from GSTR-2A/2B.<br><br><strong>Step 2:</strong> Per <span class="law">Circular 125/2019 para 54(a)</span>, ALL ITC availed is included in Net ITC irrespective of rate differential. The formula naturally limits refund via the turnover ratio.<br><br><strong>Step 3:</strong> Officer must record: which HSN codes attract what rate, what the outward supply rate is, and how ITC was bifurcated if at all.<br><br><span class="law">Circular 181/13/2022</span> addresses IDS refund on specific goods in chapters 15 &amp; 27 — apply where applicable.<br><br><span class="chip chip-rule">Rule 89(5)</span> <span class="chip chip-rule">Circular 125/2019 para 54(a)</span> <span class="chip chip-rule">Circular 181/13/2022</span>` },
-  { q:"Refunds of Cess — how are they handled?", ans:`Compensation Cess forms a separate ledger head. Where a taxpayer pays cess on inputs (e.g., coal, tobacco) and makes exports or ZRS, accumulated <em>input cess credit</em> in the Cess ledger can be claimed as refund. The Rule 89(4)/(5) formula is applied <em>separately for cess</em>.<br><br><strong>Key points:</strong><br>• Cess ITC cannot offset CGST/SGST/IGST output liability — only cess output liability.<br>• Excess cess credit is refundable.<br>• Verify cess head separately in the credit ledger — backed by 2B/2A invoices.<br>• The GST portal has a separate field for cess — ensure amounts are correctly entered.<br><br><span class="chip chip-law">Compensation Cess Act 2017</span> <span class="chip chip-law">Section 54 CGST</span> <span class="chip chip-rule">Rule 89</span>` },
-  { q:"How is 'Turnover of Zero Rated Supply of Services' calculated for refund in export of services? Is it based on declared supply value in GSTR-1/3B or on actual foreign exchange received?", ans:`<strong>It is based on actual foreign exchange received — NOT on declared supply value in returns.</strong><br><br><strong>Formula under <span class="law">Rule 89(4)</span>:</strong><br><br>= Payments received during the relevant period for ZRS of services<br>+ Advance received in previous period for which supply has been completed during the relevant period<br>− Advance received during the relevant period for which supply has not yet been completed<br><br><strong>Key implication:</strong> Even if a taxpayer declared export services of ₹1 crore in GSTR-1, if FIRC/BRC evidences only ₹70 lakh received, the ZRS turnover for refund is <strong>₹70 lakh</strong> (adjusted for advances).<br><br><strong>Verification:</strong> Taxpayer must submit a statement of invoices with corresponding FIRC/BRC values — the officer must compute ZRS turnover from this, not from GSTR-1/3B figures.<br><br><span class="chip chip-rule">Rule 89(4) — ZRS of services</span> <span class="chip chip-rule">Circular 125/2019</span> <span class="chip chip-warn">FIRC/BRC statement is mandatory</span>` },
-  { q:"Queries related to Circular 188/20/2022-GST — procedure for unregistered persons to claim a GST refund.", ans:`<strong>Circular 188/20/2022</strong> prescribes the procedure for unregistered buyers whose contracts were terminated after paying GST.<br><br><strong>Key checks:</strong><br>• Temporary registration obtained by the unregistered person for filing refund.<br>• Documents as per <span class="law">Rule 89(2)(ka) and (kb)</span> — agreement/contract, proof of cancellation, proof of payment of tax by supplier to government, bank statement.<br>• Certificate from the <em>supplier's authorised signatory</em> confirming tax was paid and refund will not be claimed by supplier.<br>• <strong>Critical:</strong> Refund must not exceed the amount actually <em>deposited by the supplier with the government</em> — not what was collected from the unregistered person. Excess over deposited amount = unjust enrichment.<br><br><span class="chip chip-rule">Rule 89(2)(ka)(kb)</span> <span class="chip chip-rule">Circular 188/20/2022</span> <span class="chip chip-warn">High Risk — all precautions mandatory</span>` }
-];
+    const POLLS = [
+      { id: 0, title: "Ice-breaker: Biggest Refund Challenge", q: "In your experience so far, what is the BIGGEST challenge in refund verification?", opts: ["Timely submission of verification reports", "Errors in Net ITC calculation", "Understanding ZRS/IDS formula", "Detecting fake/fraudulent applications"], correct: null, type: "experience" },
+      { id: 1, title: "Quiz: GSTR-1 vs 3B Mismatch", q: "You notice GSTR-1 declared liability is ₹10 lakh but GSTR-3B paid only ₹7 lakh (no SCN issued) for FY 2018-19. You are processing a refund in 2026. What should the sanctioning officer do?", opts: ["Ignore — it's the adjudication officer's job", "Mention it in the refund order and leave it", "issue SCN for Withholding the refund and Initiate recovery under Sec 75(12)/79", "Ask the taxpayer to self-correct in next GSTR-3B"], correct: 1, type: "quiz" },
+      { id: 2, title: "Net ITC Formula — Most Misunderstood Element", q: "Which element of the Rule 89(5) Net ITC formula causes the most confusion in IDS refund calculations?", opts: ["What to include in 'Net ITC'", "Calculation of 'Adjusted Total Turnover'", "Identifying 'Inverted Rated Supply Turnover'", "Tax paid on outward supplies of inverted rated goods"], correct: null, type: "diagnostic" },
+      { id: 3, title: "Cash Ledger Balance — Rs.1 Refund", q: "A taxpayer applies for refund of excess cash ledger balance of ₹800 (less than ₹1,000). Should you sanction it?", opts: ["No — CGST Rule prescribes minimum ₹1,000", "Yes — the ₹1,000 minimum does NOT apply to cash ledger refunds", "Yes, but only after approval from the Commissioner", "No — it's not worth the administrative effort"], correct: 1, type: "quiz" },
+      { id: 4, title: "Quiz: Refund to Cancelled Taxpayer", q: "A regular taxpayer's registration was cancelled suo-motu by the department. GSTR-10 not filed. They apply for refund. What is the correct action?", opts: ["Process the refund — cancellation doesn't bar refund rights", "Process only after GSTR-10 is filed", "Reject — suo-motu cancelled taxpayers are ineligible for refund", "Withhold refund under Section 54(10)"], correct: 2, type: "quiz" },
 
-const CASES = [
-  { tag:"FIELD CASE — Issue 6", title:"Fake Firm: Iron Scrap TDS Refund Under Cash Ledger", body:`W.e.f. October 2024, TDS was mandated for scrap dealers (Section 51), causing accumulation of cash ledger balances even in fake/fraudulent firms. Several such firms applied for refund of excess cash balance, and in some instances, refunds were sanctioned without adequate scrutiny of turnover patterns.`, q:"🤔 An iron scrap dealer's turnover jumped from ₹20 lakhs to ₹18 crores in one year, with 95% of liability discharged by ITC and TDS credit accumulated at ₹18 lakhs. They apply for refund of cash ledger balance. What should you do?", ans:`<strong>This is a RED FLAG — do NOT sanction without physical verification.</strong><br><br><strong>Action required:</strong><br>1. Check BO portal for year-on-year turnover pattern in GSTR-1.<br>2. Exponential unexplained rise in turnover with most liability discharged through ITC (not cash) = <strong>fake firm indicator</strong>.<br>3. <strong>Immediate physical verification</strong> of business premises, books, and genuineness of purchases before processing the refund.<br>4. Initiate intelligence/investigation parallel to refund proceeding — flag for urgent verification.<br><br><strong>Office Instruction Issue 6:</strong> Physical verification is mandatory in such cases. Never sanction on portal data alone when red flags exist.<br><br><span class="chip chip-warn">Section 51 TDS</span> <span class="chip chip-law">Section 54(10) — Withholding</span>` },
-  { tag:"FIELD CASE — Issue 10", title:"Net ITC Denied for Lower-Rate Inputs — IDS Refund Error", body:`During audit of IDS refund orders, it was found that sanctioning authorities were denying ITC of GST paid on inputs procured at rates equal to or lower than the output supply rate — reasoning that such inputs do not contribute to the "inversion" and hence their ITC should not be in Net ITC.`, q:"🤔 A taxpayer manufactures goods at 5% GST and procures some raw materials at 5% and others at 12%. The sanctioning authority excluded the ITC on 5% inputs from Net ITC in the Rule 89(5) formula. Is this correct?", ans:`<strong>This is INCORRECT and amounts to erroneous denial of legitimate refund.</strong><br><br><strong>Correct position per Circular 125/44/2019, para 54(a):</strong> All ITC availed during the relevant period — regardless of whether the input tax rate is higher, equal, or lower than the output rate — <em>must be included in Net ITC</em>.<br><br><strong>Why:</strong> The Rule 89(5) formula inherently limits the refund by applying the ratio of inverted turnover to total adjusted turnover. Pre-filtering ITC based on rate comparison is an addition not prescribed in law.<br><br><strong>Corrective action:</strong> Such orders must be reviewed and corrected. The Office Instruction specifically flags this as a recurring error.<br><br><span class="chip chip-rule">Rule 89(5)</span> <span class="chip chip-rule">Circular 125/2019 para 54(a)</span> <span class="chip chip-warn">Common error — must correct</span>` },
-  { tag:"FIELD CASE — Circular 188/20/2022", title:"Unregistered Person Refund — Unjust Enrichment of Supplier", body:`A builder collected ₹50 lakh as advance from an unregistered buyer under a construction agreement, charging GST on the full amount. The agreement was later cancelled. The supplier issued invoices progressively against earlier advances, depositing GST with government only on ₹35 lakh worth of invoices raised. The buyer now claims refund for GST on the full ₹50 lakh.`, q:"🤔 The unregistered buyer claims refund of GST on ₹50 lakh (full agreement value). The supplier deposited GST only on ₹35 lakh with the government. For what amount can refund be granted?", ans:`<strong>Refund can only be granted for the GST deposited with the government — i.e., on ₹35 lakh, NOT ₹50 lakh.</strong><br><br>The GST on the balance ₹15 lakh was collected by the supplier but <em>not deposited with the government</em>. Granting refund on ₹50 lakh would <strong>unjustly enrich the supplier</strong>.<br><br><strong>Key checks:</strong><br>• Certificate from supplier's authorised signatory must state the GST deposited amount.<br>• Cross-verify with supplier's GSTR-1 and 3B to confirm invoice values and tax deposited.<br>• Refund is capped at government receipts — not at what the buyer paid to the supplier.<br><br><span class="chip chip-rule">Circular 188/20/2022</span> <span class="chip chip-rule">Rule 89(2)(ka)(kb)</span> <span class="chip chip-warn">Unjust Enrichment check mandatory</span>` },
-  { tag:"FIELD CASE — Issue 3", title:"Section 16(4) Regularised — Incorrect Pre-deposit Refund", body:`A taxpayer was served an SCN for violation of Section 16(4). The taxpayer paid the demand during appeal. Subsequently, Section 16(5) and 16(6) were inserted retrospectively, regularising the ITC claim. The taxpayer now claims refund of the tax so paid.`, q:"🤔 Should refund be granted for the tax paid on account of a Section 16(4) violation that was subsequently regularised by Section 16(5)/16(6)?", ans:`<strong>No — refund in such cases is NOT admissible as per Notification 237/2024.</strong><br><br>When Section 16(5) and 16(6) were inserted to regularise ITC claims, it was simultaneously clarified (vide Notification 237/2024) that <em>amounts already paid on account of Section 16(4) violations cannot be refunded</em>. The insertion of 16(5)/16(6) was prospective — it did not create a ground for refund of past payments made under demand orders.<br><br><strong>Officer action:</strong> Reject such refund applications with specific reference to Notification 237/2024. Pass a speaking order addressing the taxpayer's submissions.<br><br><span class="chip chip-law">Section 16(5)/16(6)</span> <span class="chip chip-rule">Notification 237/2024</span> <span class="chip chip-warn">Do NOT sanction</span>` },
-  { tag:"FIELD CASE — SOP Para 5.1(b)", title:"Cancelled Registration — SEZ Refund Application", body:`An SEZ supplier's GST registration was cancelled suo-motu by the department due to non-filing of returns for over 6 months. GSTR-10 (final return) has not been filed. The range officer inspected the premises and found the business was operational. The officer is recommending the refund for accumulated ITC on ZRS exports.`, q:"🤔 Should the verifying officer recommend this refund application for processing?", ans:`<strong>No — this refund CANNOT be recommended. Two disqualifying conditions exist.</strong><br><br><strong>Disqualification 1 — Suo-motu cancellation:</strong> Per SOP Para 5.1(b), a taxpayer whose registration was cancelled suo-motu is NOT eligible for refund.<br><br><strong>Disqualification 2 — GSTR-10 not filed:</strong> Even for voluntarily cancelled taxpayers, the final return GSTR-10 must be filed before refund is admissible.<br><br><strong>What the officer must record:</strong> Reason for cancellation, date, GSTR-10 status, and cite these as bars to the refund in the verification report.<br><br><span class="chip chip-rule">Rule 21A</span> <span class="chip chip-warn">Suo-motu cancellation = ineligible</span> <span class="chip chip-warn">GSTR-10 mandatory</span>` },
-  { tag:"FIELD CASE — Issue 9 / Rule 96B", title:"BRC/FIRC Not Submitted — Erroneous Refund SCN Window Closing", body:`An exporter received refund of IGST paid on export of goods 18 months ago. It is now found that BRC/FIRC was never obtained on record, and export proceeds have not been realised within the period prescribed under Rule 96B (9 months from export date, extendable to 15 months with RBI permission). No extension was obtained from RBI.`, q:"🤔 What is the correct action and what is the critical time constraint?", ans:`<strong>Issue SCN for erroneous refund recovery immediately — this is time-bound.</strong><br><br><strong>Legal position under Rule 96B:</strong> If export proceeds are not realised within the prescribed period, the refund of IGST is treated as <em>erroneous refund</em> and is recoverable with interest.<br><br><strong>Time constraint:</strong> Recovery is governed by <span class="law">Section 73/74</span> — SCN must be issued within <em>3 years from the date of erroneous refund</em> (5 years if fraud). Since 18 months have passed, <strong>immediate action is critical</strong>.<br><br><strong>Process:</strong><br>1. Issue letter demanding BRC/FIRC immediately.<br>2. If not submitted, issue SCN under Rule 96B read with Section 73 for recovery + interest.<br>3. Record original refund order date, amount, and cite Rule 96B as basis of recovery.<br><br><span class="chip chip-rule">Rule 96B</span> <span class="chip chip-law">Section 73 (3-year SCN)</span> <span class="chip chip-warn">Time-bound — act now</span>` },
-  { tag:"DOUBT 7 EXPANDED", title:"Mixed Invoice in IDS Claim — Multi-Rate Goods Worked Example", body:`A taxpayer manufactures edible oil (output rate: 5%) and receives a single invoice containing: groundnuts at 5% GST (₹10 lakh), packaging material (tin) at 18% GST (₹2 lakh), and chemicals at 18% GST (₹1 lakh). The taxpayer claims IDS refund including ITC on all three items.`, q:"🤔 How should the verifying officer treat each line item's ITC for the purpose of IDS refund?", ans:`<strong>All three ITC amounts form part of Net ITC — per Circular 125/2019 para 54(a).</strong><br><br><strong>Line-item analysis:</strong><br>• Groundnuts at 5%: Same rate as output — no inversion, but ITC is still included in Net ITC per Circular 125/2019 para 54(a).<br>• Tin packaging at 18%: Higher rate than output (5%) — classic IDS, ITC included.<br>• Chemicals at 18%: Higher rate than output (5%) — ITC included.<br><br><strong>Refund amount</strong> is governed by the Rule 89(5) formula applied to aggregate Net ITC and aggregate turnover of inverted rated supply — NOT calculated item-by-item.<br><br><strong>Officer's verification note must state:</strong> HSN codes, rates on each item, outward supply rate, and confirm all ITC included in Net ITC per Circular 125/2019 para 54(a).<br><br><span class="chip chip-rule">Rule 89(5)</span> <span class="chip chip-rule">Circular 125/2019 para 54(a)</span> <span class="chip chip-rule">Circular 181/13/2022</span>` },
-  { tag:"FIELD CASE — Issue 1", title:"Section 125 General Penalty — Mechanical Invocation", body:`In an adjudication order under Section 73 for short payment of GST, the adjudicating officer also imposed a penalty of ₹25,000 under Section 125, noting only "general penalty as applicable" without any specific finding on why Section 125 was attracted.`, q:"🤔 Is this order sustainable? What is the defect and what should have been done?", ans:`<strong>This order is UNSUSTAINABLE and will be set aside in appeal.</strong><br><br><strong>Defects:</strong><br>1. No finding that other penal provisions (Section 122, 123, 124) are inapplicable.<br>2. No reasons for the quantum (₹25,000) — what principle was applied?<br>3. Not a speaking order — does not address the taxpayer's reply or satisfy natural justice requirements under Section 75(4) and (6).<br><br><strong>Correct approach:</strong><br>• First examine whether the contravention is covered by Section 122, 123, or another specific provision.<br>• Only if no specific provision applies, invoke Section 125 with explicit reasons.<br>• Quantum must be proportionate and reasoned.<br><br><span class="chip chip-law">Section 125 CGST</span> <span class="chip chip-law">Section 75(4)(6)</span> <span class="chip chip-warn">Will not survive appeal</span>` },
-  { tag:"FIELD CASE — Issue 8", title:"Unnecessary Documents — TDS Certificate Demanded for Cash Ledger Refund", body:`A taxpayer applied for refund of excess balance in electronic cash ledger, accumulated due to TDS under Section 51. The sanctioning authority raised a deficiency memo (RFD-03) seeking the TDS certificate from the deductor as a mandatory document.`, q:"🤔 Is the demand for TDS certificate valid? What is the correct position?", ans:`<strong>No — this is an undue and impermissible document demand.</strong><br><br>The amount of TDS credit and cash accumulation is <em>directly visible on the GSTN Back-Office (BO) portal</em> and is auto-populated in the taxpayer's electronic cash ledger. No provision in Circular 125/2019 or the CGST Rules requires submission of TDS certificate for refund of excess cash ledger balance.<br><br><strong>Office Instruction Issue 8:</strong> No documents not mentioned in the circular/guidelines should be sought. Asking for TDS certificate violates this instruction and causes unnecessary harassment.<br><br><strong>Corrective action:</strong> Withdraw the deficiency memo insofar as it demands the TDS certificate. Process based on portal data. If there is genuine doubt, verify via BO portal.<br><br><span class="chip chip-rule">Circular 125/44/2019</span> <span class="chip chip-law">Section 51 TDS</span> <span class="chip chip-warn">Facilitation — no undue demands</span>` }
-];
+    ];
 
-const POLLS = [
-  { id:0, title:"Ice-breaker: Biggest Refund Challenge", q:"In your experience so far, what is the BIGGEST challenge in refund verification?", opts:["Timely submission of verification reports","Errors in Net ITC calculation","Understanding ZRS/IDS formula","Detecting fake/fraudulent applications"], correct:null, type:"experience" },
-  { id:1, title:"Quiz: GSTR-1 vs 3B Mismatch", q:"You notice GSTR-1 declared liability is ₹10 lakh but GSTR-3B paid only ₹7 lakh (no SCN issued). You are processing a refund. What should the verifying officer do?", opts:["Ignore — it's the adjudication officer's job","Report in verification report; recovery under Sec 75(12)/79 is mandatory","Withhold the entire refund until mismatch is resolved","Ask the taxpayer to self-correct in next GSTR-3B"], correct:1, type:"quiz" },
-  { id:2, title:"Net ITC Formula — Most Misunderstood Element", q:"Which element of the Rule 89(5) Net ITC formula causes the most confusion in IDS refund calculations?", opts:["What to include in 'Net ITC'","Calculation of 'Adjusted Total Turnover'","Identifying 'Inverted Rated Supply Turnover'","Tax paid on outward supplies of inverted rated goods"], correct:null, type:"diagnostic" },
-  { id:3, title:"Cash Ledger Balance — Rs.1 Refund", q:"A taxpayer applies for refund of excess cash ledger balance of ₹800 (less than ₹1,000). Should you sanction it?", opts:["No — CGST Rule prescribes minimum ₹1,000","Yes — the ₹1,000 minimum does NOT apply to cash ledger refunds","Yes, but only after approval from the Commissioner","No — it's not worth the administrative effort"], correct:1, type:"quiz" },
-  { id:4, title:"Quiz: Refund to Cancelled Taxpayer", q:"A taxpayer's registration was cancelled suo-motu by the department. GSTR-10 not filed. They apply for refund of accumulated ITC. What is the correct action?", opts:["Process the refund — cancellation doesn't bar refund rights","Process only after GSTR-10 is filed","Reject — suo-motu cancelled taxpayers are ineligible for refund","Withhold refund under Section 54(10) pending cancellation review"], correct:2, type:"quiz" },
-  { id:5, title:"Final Reflection: Your Commitment", q:"After today's session, what ONE change will you make in your NEXT refund verification report?", opts:["Always check GSTR-1 vs 3B mismatch on BO portal","Record how each formula value was verified (not just copy taxpayer's figures)","Check Aadhaar authentication status and record it","Verify BRC/FIRC status for export refunds immediately"], correct:null, type:"reflection" }
-];
+    // ════════════════════════════════════════════════════
+    //  STATE
+    // ════════════════════════════════════════════════════
+    let token = sessionStorage.getItem('gst_token') || null;
+    let role = sessionStorage.getItem('gst_role') || null;
+    let pollTimers = {};
+    let selectedOptions = {}; // pollId -> optionIndex
 
-// ════════════════════════════════════════════════════
-//  STATE
-// ════════════════════════════════════════════════════
-let token = sessionStorage.getItem('gst_token') || null;
-let role  = sessionStorage.getItem('gst_role')  || null;
-let pollTimers = {};
-let selectedOptions = {}; // pollId -> optionIndex
+    // ════════════════════════════════════════════════════
+    //  AUTH
+    // ════════════════════════════════════════════════════
+    async function doLogin() {
+      const btn = document.getElementById('login-btn');
+      const errEl = document.getElementById('login-error');
+      const user = document.getElementById('inp-user').value.trim();
+      const pass = document.getElementById('inp-pass').value.trim();
+      errEl.style.display = 'none';
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Signing in...';
+      try {
+        const r = await fetch('/api/auth', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || 'Login failed');
+        token = data.token; role = data.role;
+        sessionStorage.setItem('gst_token', token);
+        sessionStorage.setItem('gst_role', role);
+        enterSession();
+      } catch (e) {
+        errEl.textContent = e.message === 'Invalid credentials' ? 'Invalid username or password.' : 'Could not reach server. Please try again.';
+        errEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Sign In →';
+      }
+    }
 
-// ════════════════════════════════════════════════════
-//  AUTH
-// ════════════════════════════════════════════════════
-async function doLogin() {
-  const btn = document.getElementById('login-btn');
-  const errEl = document.getElementById('login-error');
-  const user = document.getElementById('inp-user').value.trim();
-  const pass = document.getElementById('inp-pass').value.trim();
-  errEl.style.display = 'none';
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Signing in...';
-  try {
-    const r = await fetch('/api/auth', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ username:user, password:pass })
+    function doLogout() {
+      token = null; role = null;
+      sessionStorage.removeItem('gst_token');
+      sessionStorage.removeItem('gst_role');
+      Object.values(pollTimers).forEach(clearInterval);
+      pollTimers = {};
+      showView('view-login');
+    }
+
+    function enterSession() {
+      if (role === 'admin') {
+        buildAdminPolls(); buildAdminDoubts(); buildAdminCases();
+        showView('view-admin');
+      } else {
+        buildTraineePolls(); buildTraineeDoubts(); buildTraineeCases();
+        showView('view-trainee');
+      }
+    }
+
+    // Auto-login if token in session
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('inp-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+      if (token && role) enterSession();
     });
-    const data = await r.json();
-    if (!r.ok) throw new Error(data.error || 'Login failed');
-    token = data.token; role = data.role;
-    sessionStorage.setItem('gst_token', token);
-    sessionStorage.setItem('gst_role', role);
-    enterSession();
-  } catch(e) {
-    errEl.textContent = e.message === 'Invalid credentials' ? 'Invalid username or password.' : 'Could not reach server. Please try again.';
-    errEl.style.display = 'block';
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = 'Sign In →';
-  }
-}
 
-function doLogout() {
-  token = null; role = null;
-  sessionStorage.removeItem('gst_token');
-  sessionStorage.removeItem('gst_role');
-  Object.values(pollTimers).forEach(clearInterval);
-  pollTimers = {};
-  showView('view-login');
-}
+    // ════════════════════════════════════════════════════
+    //  NAVIGATION
+    // ════════════════════════════════════════════════════
+    function showView(id) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo(0, 0);
+    }
 
-function enterSession() {
-  if (role === 'admin') {
-    buildAdminPolls(); buildAdminDoubts(); buildAdminCases();
-    showView('view-admin');
-  } else {
-    buildTraineePolls(); buildTraineeDoubts(); buildTraineeCases();
-    showView('view-trainee');
-  }
-}
+    function switchTab(prefix, tabId) {
+      const view = document.getElementById('view-' + prefix);
+      view.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      view.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      // find clicked tab
+      event.target.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
 
-// Auto-login if token in session
-window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('inp-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
-  if (token && role) enterSession();
-});
+    // ════════════════════════════════════════════════════
+    //  API HELPERS
+    // ════════════════════════════════════════════════════
+    async function getVotes(pollId) {
+      try {
+        const r = await fetch(`/api/votes?poll=${pollId}`, { headers: { Authorization: `Bearer ${token}` } });
+        if (!r.ok) return null;
+        const d = await r.json();
+        return d.votes;
+      } catch { return null; }
+    }
 
-// ════════════════════════════════════════════════════
-//  NAVIGATION
-// ════════════════════════════════════════════════════
-function showView(id) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-}
+    async function submitVote(pollId, optionIndex, numOptions) {
+      const r = await fetch('/api/votes', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ pollId, optionIndex, numOptions })
+      });
+      if (!r.ok) throw new Error('Vote failed');
+      return (await r.json()).votes;
+    }
 
-function switchTab(prefix, tabId) {
-  const view = document.getElementById('view-' + prefix);
-  view.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  view.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  // find clicked tab
-  event.target.classList.add('active');
-  document.getElementById(tabId).classList.add('active');
-}
+    async function resetVotes(pollId) {
+      await fetch(`/api/votes?poll=${pollId}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+    }
 
-// ════════════════════════════════════════════════════
-//  API HELPERS
-// ════════════════════════════════════════════════════
-async function getVotes(pollId) {
-  try {
-    const r = await fetch(`/api/votes?poll=${pollId}`, { headers:{ Authorization:`Bearer ${token}` }});
-    if (!r.ok) return null;
-    const d = await r.json();
-    return d.votes;
-  } catch { return null; }
-}
-
-async function submitVote(pollId, optionIndex, numOptions) {
-  const r = await fetch('/api/votes', {
-    method:'POST', headers:{'Content-Type':'application/json', Authorization:`Bearer ${token}`},
-    body: JSON.stringify({ pollId, optionIndex, numOptions })
-  });
-  if (!r.ok) throw new Error('Vote failed');
-  return (await r.json()).votes;
-}
-
-async function resetVotes(pollId) {
-  await fetch(`/api/votes?poll=${pollId}`, { method:'DELETE', headers:{ Authorization:`Bearer ${token}` }});
-}
-
-// ════════════════════════════════════════════════════
-//  TRAINEE — POLLS
-// ════════════════════════════════════════════════════
-function buildTraineePolls() {
-  const wrap = document.getElementById('trainee-polls-list');
-  wrap.innerHTML = POLLS.map(p => `
+    // ════════════════════════════════════════════════════
+    //  TRAINEE — POLLS
+    // ════════════════════════════════════════════════════
+    function buildTraineePolls() {
+      const wrap = document.getElementById('trainee-polls-list');
+      wrap.innerHTML = POLLS.map(p => `
     <div style="margin-bottom:32px;" id="tp-${p.id}">
       <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--accent2);text-transform:uppercase;margin-bottom:8px;">${p.type === 'quiz' ? '🧠 QUIZ' : p.type === 'reflection' ? '💭 REFLECTION' : '🗳 LIVE POLL'} · ${p.title}</div>
       <div class="poll-q">${p.q}</div>
       <div class="poll-opts" id="tp-opts-${p.id}">
-        ${p.opts.map((o,j) => `
+        ${p.opts.map((o, j) => `
           <div class="poll-opt" id="tp-opt-${p.id}-${j}" onclick="traineeVote(${p.id},${j},${p.opts.length})">
-            <div class="opt-letter">${['A','B','C','D'][j]}</div>
+            <div class="opt-letter">${['A', 'B', 'C', 'D'][j]}</div>
             <div class="opt-text">${o}</div>
           </div>`).join('')}
       </div>
       <div class="poll-status" id="tp-status-${p.id}">Select your answer above.</div>
     </div>
   `).join('');
-}
+    }
 
-async function traineeVote(pollId, optIdx, numOpts) {
-  if (selectedOptions[pollId] !== undefined) return;
-  selectedOptions[pollId] = optIdx;
-  // Mark selected — neutral blue only, no correct/wrong
-  document.querySelectorAll(`#tp-opts-${pollId} .poll-opt`).forEach((el,k) => {
-    el.classList.add('voted');
-    if(k === optIdx) el.classList.add('selected');
-  });
-  const status = document.getElementById(`tp-status-${pollId}`);
-  status.textContent = 'Submitting...';
-  try {
-    await submitVote(pollId, optIdx, numOpts);
-    status.textContent = '✓ Response submitted. Wait for instructor to reveal the answer.';
-    status.classList.add('success');
-  } catch {
-    status.textContent = 'Could not submit — please check connection.';
-  }
-}
+    async function traineeVote(pollId, optIdx, numOpts) {
+      if (selectedOptions[pollId] !== undefined) return;
+      selectedOptions[pollId] = optIdx;
+      // Mark selected — neutral blue only, no correct/wrong
+      document.querySelectorAll(`#tp-opts-${pollId} .poll-opt`).forEach((el, k) => {
+        el.classList.add('voted');
+        if (k === optIdx) el.classList.add('selected');
+      });
+      const status = document.getElementById(`tp-status-${pollId}`);
+      status.textContent = 'Submitting...';
+      try {
+        await submitVote(pollId, optIdx, numOpts);
+        status.textContent = '✓ Response submitted. Wait for instructor to reveal the answer.';
+        status.classList.add('success');
+      } catch {
+        status.textContent = 'Could not submit — please check connection.';
+      }
+    }
 
-// ════════════════════════════════════════════════════
-//  TRAINEE — DOUBTS (questions only, no answers)
-// ════════════════════════════════════════════════════
-function buildTraineeDoubts() {
-  document.getElementById('trainee-doubts-list').innerHTML = DOUBTS.map((d,i) => `
+    // ════════════════════════════════════════════════════
+    //  TRAINEE — DOUBTS (questions only, no answers)
+    // ════════════════════════════════════════════════════
+    function buildTraineeDoubts() {
+      document.getElementById('trainee-doubts-list').innerHTML = DOUBTS.map((d, i) => `
     <div class="doubt-card" style="cursor:default;">
-      <div class="doubt-num">DOUBT #${String(i+1).padStart(2,'0')}</div>
+      <div class="doubt-num">DOUBT #${String(i + 1).padStart(2, '0')}</div>
       <div class="doubt-q">${d.q}</div>
       <div style="margin-top:12px;font-size:.8rem;color:#5a7099;font-style:italic;">Answer will be revealed by the instructor during discussion.</div>
     </div>
   `).join('');
-}
+    }
 
-// ════════════════════════════════════════════════════
-//  TRAINEE — CASES (scenario + question only)
-// ════════════════════════════════════════════════════
-function buildTraineeCases() {
-  document.getElementById('trainee-cases-list').innerHTML = CASES.map((c,i) => `
+    // ════════════════════════════════════════════════════
+    //  TRAINEE — CASES (scenario + question only)
+    // ════════════════════════════════════════════════════
+    function buildTraineeCases() {
+      document.getElementById('trainee-cases-list').innerHTML = CASES.map((c, i) => `
     <div style="margin-bottom:28px;">
       <div class="case-banner">
-        <div class="case-banner-tag">CASE ${i+1} — ${c.tag}</div>
+        <div class="case-banner-tag">CASE ${i + 1} — ${c.tag}</div>
         <div class="case-banner-title">${c.title}</div>
         <div class="case-banner-body">${c.body}</div>
       </div>
@@ -499,14 +1173,14 @@ function buildTraineeCases() {
       <div style="padding:14px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;font-size:.85rem;color:#5a7099;font-style:italic;">Think through your answer. The instructor will reveal the correct position after discussion.</div>
     </div>
   `).join('');
-}
+    }
 
-// ════════════════════════════════════════════════════
-//  ADMIN — POLLS (live results + reveal)
-// ════════════════════════════════════════════════════
-function buildAdminPolls() {
-  const wrap = document.getElementById('admin-polls-list');
-  wrap.innerHTML = POLLS.map(p => `
+    // ════════════════════════════════════════════════════
+    //  ADMIN — POLLS (live results + reveal)
+    // ════════════════════════════════════════════════════
+    function buildAdminPolls() {
+      const wrap = document.getElementById('admin-polls-list');
+      wrap.innerHTML = POLLS.map(p => `
     <div style="margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.07);" id="ap-${p.id}">
       <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--accent2);text-transform:uppercase;margin-bottom:8px;">${p.type === 'quiz' ? '🧠 QUIZ' : p.type === 'reflection' ? '💭 REFLECTION' : '🗳 LIVE POLL'} · ${p.title}</div>
       <div style="font-size:1.05rem;font-weight:700;margin-bottom:18px;line-height:1.4;">${p.q}</div>
@@ -520,77 +1194,77 @@ function buildAdminPolls() {
       <div id="ap-results-${p.id}"><div style="color:#5a7099;font-size:.85rem;">Click Refresh to load live results.</div></div>
     </div>
   `).join('');
-  // Auto-refresh all polls every 6 seconds
-  POLLS.forEach(p => {
-    adminRefresh(p.id);
-    pollTimers[p.id] = setInterval(() => adminRefresh(p.id), 6000);
-  });
-}
+      // Auto-refresh all polls every 6 seconds
+      POLLS.forEach(p => {
+        adminRefresh(p.id);
+        pollTimers[p.id] = setInterval(() => adminRefresh(p.id), 6000);
+      });
+    }
 
-async function adminRefresh(pollId) {
-  const votes = await getVotes(pollId);
-  if (!votes) return;
-  renderAdminResults(pollId, votes, false);
-  document.getElementById(`ap-lastupdated-${pollId}`).textContent = 'Updated ' + new Date().toLocaleTimeString();
-}
+    async function adminRefresh(pollId) {
+      const votes = await getVotes(pollId);
+      if (!votes) return;
+      renderAdminResults(pollId, votes, false);
+      document.getElementById(`ap-lastupdated-${pollId}`).textContent = 'Updated ' + new Date().toLocaleTimeString();
+    }
 
-function renderAdminResults(pollId, votes, showCorrect) {
-  const p = POLLS.find(x => x.id === pollId);
-  const total = votes.reduce((a,b) => a+b, 0) || 1;
-  const maxV = Math.max(...votes);
-  const letters = ['A','B','C','D'];
-  let html = `<div class="live-grid">${votes.map((v,j) => `
-    <div class="live-card ${v === maxV && votes.reduce((a,b)=>a+b,0) > 0 ? 'leading' : ''}">
+    function renderAdminResults(pollId, votes, showCorrect) {
+      const p = POLLS.find(x => x.id === pollId);
+      const total = votes.reduce((a, b) => a + b, 0) || 1;
+      const maxV = Math.max(...votes);
+      const letters = ['A', 'B', 'C', 'D'];
+      let html = `<div class="live-grid">${votes.map((v, j) => `
+    <div class="live-card ${v === maxV && votes.reduce((a, b) => a + b, 0) > 0 ? 'leading' : ''}">
       <div class="lc-letter">${letters[j]}</div>
       <div class="lc-opt">${p.opts[j]}</div>
       <div class="lc-count">${v}</div>
-      <div class="lc-pct">${Math.round(v/total*100)}%</div>
+      <div class="lc-pct">${Math.round(v / total * 100)}%</div>
     </div>`).join('')}</div>`;
-  html += `<div style="margin-top:14px;font-size:.85rem;color:var(--muted);">Total votes: <strong style="color:#fff;">${votes.reduce((a,b)=>a+b,0)}</strong></div>`;
-  if (showCorrect && p.correct !== null) {
-    html += `<div class="correct-reveal" style="margin-top:16px;"><strong>✅ Correct Answer: ${letters[p.correct]} — ${p.opts[p.correct]}</strong></div>`;
-  }
-  document.getElementById(`ap-results-${pollId}`).innerHTML = html;
-}
+      html += `<div style="margin-top:14px;font-size:.85rem;color:var(--muted);">Total votes: <strong style="color:#fff;">${votes.reduce((a, b) => a + b, 0)}</strong></div>`;
+      if (showCorrect && p.correct !== null) {
+        html += `<div class="correct-reveal" style="margin-top:16px;"><strong>✅ Correct Answer: ${letters[p.correct]} — ${p.opts[p.correct]}</strong></div>`;
+      }
+      document.getElementById(`ap-results-${pollId}`).innerHTML = html;
+    }
 
-async function adminReveal(pollId) {
-  const votes = await getVotes(pollId) || POLLS.find(x=>x.id===pollId).opts.map(()=>0);
-  renderAdminResults(pollId, votes, true);
-}
+    async function adminReveal(pollId) {
+      const votes = await getVotes(pollId) || POLLS.find(x => x.id === pollId).opts.map(() => 0);
+      renderAdminResults(pollId, votes, true);
+    }
 
-async function adminReset(pollId) {
-  if (!confirm('Reset all votes for this poll?')) return;
-  await resetVotes(pollId);
-  toast('Poll reset ✓');
-  adminRefresh(pollId);
-}
+    async function adminReset(pollId) {
+      if (!confirm('Reset all votes for this poll?')) return;
+      await resetVotes(pollId);
+      toast('Poll reset ✓');
+      adminRefresh(pollId);
+    }
 
-// ════════════════════════════════════════════════════
-//  ADMIN — DOUBTS (full answers visible)
-// ════════════════════════════════════════════════════
-function buildAdminDoubts() {
-  document.getElementById('admin-doubts-list').innerHTML = DOUBTS.map((d,i) => `
+    // ════════════════════════════════════════════════════
+    //  ADMIN — DOUBTS (full answers visible)
+    // ════════════════════════════════════════════════════
+    function buildAdminDoubts() {
+      document.getElementById('admin-doubts-list').innerHTML = DOUBTS.map((d, i) => `
     <div class="doubt-card" onclick="toggleAdminDoubt(${i})">
-      <div class="doubt-num">DOUBT #${String(i+1).padStart(2,'0')} <span style="color:#5a7099;font-weight:400;">(click to expand answer)</span></div>
+      <div class="doubt-num">DOUBT #${String(i + 1).padStart(2, '0')} <span style="color:#5a7099;font-weight:400;">(click to expand answer)</span></div>
       <div class="doubt-q">${d.q}</div>
       <div class="doubt-ans" id="ad-ans-${i}">${d.ans}</div>
     </div>
   `).join('');
-}
+    }
 
-function toggleAdminDoubt(i) {
-  const el = document.getElementById(`ad-ans-${i}`);
-  el.style.display = el.style.display === 'block' ? 'none' : 'block';
-}
+    function toggleAdminDoubt(i) {
+      const el = document.getElementById(`ad-ans-${i}`);
+      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
 
-// ════════════════════════════════════════════════════
-//  ADMIN — CASES (with reveal button)
-// ════════════════════════════════════════════════════
-function buildAdminCases() {
-  document.getElementById('admin-cases-list').innerHTML = CASES.map((c,i) => `
+    // ════════════════════════════════════════════════════
+    //  ADMIN — CASES (with reveal button)
+    // ════════════════════════════════════════════════════
+    function buildAdminCases() {
+      document.getElementById('admin-cases-list').innerHTML = CASES.map((c, i) => `
     <div style="margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.07);">
       <div class="case-banner">
-        <div class="case-banner-tag">CASE ${i+1} — ${c.tag}</div>
+        <div class="case-banner-tag">CASE ${i + 1} — ${c.tag}</div>
         <div class="case-banner-title">${c.title}</div>
         <div class="case-banner-body">${c.body}</div>
       </div>
@@ -604,23 +1278,24 @@ function buildAdminCases() {
       </div>
     </div>
   `).join('');
-}
+    }
 
-function adminRevealCase(i) {
-  const el = document.getElementById(`ac-reveal-${i}`);
-  el.style.display = el.style.display === 'block' ? 'none' : 'block';
-  if (el.style.display === 'block') el.scrollIntoView({behavior:'smooth', block:'nearest'});
-}
+    function adminRevealCase(i) {
+      const el = document.getElementById(`ac-reveal-${i}`);
+      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+      if (el.style.display === 'block') el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
 
-// ════════════════════════════════════════════════════
-//  TOAST
-// ════════════════════════════════════════════════════
-function toast(msg, isError) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast' + (isError ? ' error' : '') + ' show';
-  setTimeout(() => t.classList.remove('show'), 2800);
-}
-</script>
+    // ════════════════════════════════════════════════════
+    //  TOAST
+    // ════════════════════════════════════════════════════
+    function toast(msg, isError) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast' + (isError ? ' error' : '') + ' show';
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+  </script>
 </body>
+
 </html>
